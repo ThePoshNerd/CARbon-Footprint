@@ -9,7 +9,21 @@ gameNetwork.init("google")
 
 local composer = require "composer"
 
-composer.gotoScene( "manufacturerSelectScreen", "fade", 400 )
+local splash = display.newImage("assets/splashLogo.png", true)
+splash.anchorY = 0.5
+splash.anchorX = 0.5
+splash.y = _H*0.5
+splash.x = _W*0.5
+--carMakeGroup:insert(splash)
+
+
+local function carMakerScreen (event)
+  splash:removeSelf()
+  composer.gotoScene( "manufacturerSelectScreen", "fade", 400 )
+end
+transition.to( splash, { time=500, delay = 1500, alpha=0, onComplete = carMakerScreen } )
+
+
 
 --
 --[[
