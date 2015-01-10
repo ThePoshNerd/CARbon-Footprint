@@ -1,5 +1,8 @@
 local composer = require( "composer" )
 
+composer.removeScene( "driveScreen", false )
+composer.removeScene( "postDriveScreen", false )
+
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------------------------------------

@@ -1,5 +1,5 @@
 local composer = require( "composer" )
-
+composer.removeScene( "preDriveScreen", false )
 local scene = composer.newScene()
 
 local save5Achieve = "CgkI-_Shl70OEAIQAg"
@@ -76,7 +76,11 @@ function scene:create( event )
 
 
 
-
+  local myMap = native.newMapView( 0, 0, 950, 480 )
+  myMap.x = 540
+  myMap.y = 1600
+  myMap:setCenter( 36.999385, -122.053060 )
+  sceneGroup:insert(myMap)
 
 
 
@@ -197,7 +201,7 @@ function scene:create( event )
   end
 
   calcMPG()
-  local calcMpgTimer = timer.performWithDelay(1000, calcMPG, 0) --After every mile
+  local calcMpgTimer = timer.performWithDelay(2000, calcMPG, 0) --After every mile
 
 
 
@@ -264,7 +268,7 @@ function scene:create( event )
         }
       })
       print(moneySavedToSubmit)
-
+      myMap:removeSelf()
       composer.gotoScene( "postDriveScreen", "fade", 400 )
     end
   end
@@ -302,17 +306,13 @@ function scene:create( event )
     etst.y = 1600
     sceneGroup:insert(etst)
 --]]
-    local myMap = native.newMapView( 0, 0, 950, 480 )
-    myMap.x = 65
-    myMap.y = 1600
-    myMap:setCenter( 36.999385, -122.053060 )
-    sceneGroup:insert(myMap)
 
+    --[[
     local locationTable  = myMap:getUserLocation()
     local locationtxt = display.newText( "My location is: ", 0, 0, native.systemFont, 16 )
     locationtxt.x = display.contentCenterX
     locationtxt.y = display.contentCenterY+ 500
---[[
+
     if ( locationTable.errorCode ) then
       locationtxt.text = locationtxt.text .. locationTable.errorMessage
     else

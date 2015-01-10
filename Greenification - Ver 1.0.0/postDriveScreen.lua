@@ -9,6 +9,11 @@ local drive25Achieve = "CgkI-_Shl70OEAIQBQ"
 local drive50Achieve = "CgkI-_Shl70OEAIQBg"
 
 
+composer.removeScene( "driveScreen", false )
+composer.removeScene( "preDriveScreen", false )
+composer.removeScene( "postDriveScreen", false )
+
+
 local scene = composer.newScene()
 
 -- -----------------------------------------------------------------------------------------------------------------
