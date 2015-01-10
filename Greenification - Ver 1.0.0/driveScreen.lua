@@ -286,12 +286,15 @@ function scene:create( event )
     end
 
     --calcDist()
-
-
-
+--[[
+    local etst = display.newRect( 0, 0, 950, 480 )
+    etst.x = _W*0.5
+    etst.y = 1600
+    sceneGroup:insert(etst)
+--]]
     local myMap = native.newMapView( 0, 0, 950, 480 )
     myMap.x = _H*0.5
-    myMap.y = 1360
+    myMap.y = 1600
     myMap:setCenter( 36.999385, -122.053060 )
 
     local locationTable  = myMap:getUserLocation()

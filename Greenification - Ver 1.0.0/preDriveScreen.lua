@@ -124,6 +124,7 @@ gameNetwork.request("login",
 			fontSize = buttonTextSize,
 			onRelease = loginLogoutListener,
 		}
+		--sceneGroup:insert(loginLogoutButton)
 
 		-- Checks if the auto login worked and if it did then change the text on the button
 		if gameNetwork.request("isConnected") then

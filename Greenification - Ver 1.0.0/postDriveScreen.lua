@@ -29,21 +29,40 @@ carMakerGroup = display.newGroup()
 sceneGroup:insert( carMakerGroup )
 
 
+local postDriveMenu = display.newImage("assets/menus/postDriveScreen.png", true)
+postDriveMenu.anchorY = 0.5
+postDriveMenu.anchorX = 0.5
+postDriveMenu.y = _H*0.5
+postDriveMenu.x = _W*0.5
+sceneGroup:insert(postDriveMenu)
 
-
-local leaderboardButton = display.newCircle( 100, 100, 256 )
+local leaderboardButton = display.newRect( 0, 0, 860, 250 )
 leaderboardButton.x = _W*0.5
-leaderboardButton.y = _H*0.5
+leaderboardButton.y = _H*0.5 - 75
+leaderboardButton.alpha = 0.1
 sceneGroup:insert(leaderboardButton)
 
+local redeemButton = display.newRect( 0, 0, 860, 250 )
+redeemButton.x = _W*0.5
+redeemButton.y = _H*0.5 + 275
+redeemButton.alpha = 0.1
+sceneGroup:insert(redeemButton)
 
-local function goToDriveScreen (event)
+
+local newDriveButton = display.newRect( 0, 0, 860, 250 )
+newDriveButton.x = _W*0.5
+newDriveButton.y = _H*0.5 + 615
+newDriveButton.alpha = 0.1
+sceneGroup:insert(newDriveButton)
+
+
+local function showLeaderboard (event)
 	if event.phase == "began" then
 		gameNetwork.show("leaderboards")
 	end
 end
 
-leaderboardButton:addEventListener( "touch", goToDriveScreen )
+leaderboardButton:addEventListener( "touch", showLeaderboard )
 
 
 ---------------------------------------
