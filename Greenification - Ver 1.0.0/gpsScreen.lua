@@ -10,6 +10,79 @@ function scene:create( event )
 
 
 
+	local fuelPrice = 2.75
+	local milesDriven = 48
+
+	local estimatedMPG = 24
+	local estimatedFuelUsed
+	local estimatedSpentOnFuel
+
+
+
+		local function calcMPG()
+
+
+
+
+			print("Estimated MPG: " .. estimatedMPG )
+
+			estimatedFuelUsed = milesDriven/estimatedMPG
+			print("Estimated Fuel Used: " .. estimatedFuelUsed .. " Gallons")
+
+			estimatedSpentOnFuel = fuelPrice*estimatedFuelUsed
+			print("Estimated Amount Spent on Fuel: " .. "$" .. estimatedSpentOnFuel )
+
+
+
+		end
+
+		calcMPG()
+
+
+
+
+
+		--average
+		--highest
+		--lowest
+
+
+		--leaderboards - highest mpg average over 50 miles, highest mpg over 100 miles
+		-- achievements - Save $5, Save $10, Save $20, Save $50, Drive 50 miles using Greenification
+
+		---coupons also pop up when you get Achievements
+
+
+
+
+
+
+
+
+
+
+
+
+
+		function calcDist(lat1, lon1, lat2, lon2)
+			lat1 = 37.989150
+			lat2 = 37.997519
+			lon1 = -122.076264
+			lon2 = -121.715381
+
+			dlon = lon2-lon1
+			dlat = lat2-lat1
+
+			a = math.pow(math.sin(dlat/2),2) + math.cos(lat1) * math.cos(lat2) * math.pow(math.sin(dlon/2),2)
+			c = 2 * math.asin(math.sqrt(a))
+			dist = 58.9 * c      -- multiply by 0.621371 to convert to miles
+			print(dist)
+			return dist
+		end
+
+		calcDist()
+
+
 
 	local myMap = native.newMapView( 0, 0, 320, 480 )
 	myMap.x = display.contentCenterX

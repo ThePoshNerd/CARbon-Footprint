@@ -36,27 +36,30 @@ swipeTouchObj.y = _H*0.5
 swipeTouchObj.alpha = 0.1
 sceneGroup:insert(swipeTouchObj)
 
-local nissanLogo = display.newImage("assets/carLogos/nissan.png", true)
+local nissanLogo = display.newImage("assets/carLogos/toyota.png", true)
 nissanLogo.anchorY = 0
 nissanLogo.anchorx = 0
 nissanLogo.y = 100
 nissanLogo.x = _W*0.5
 sceneGroup:insert(nissanLogo)
 
-local vehicle1 = display.newImage("assets/cars/nissan-leaf.png", true)
+local vehicle1 = display.newImage("assets/cars/toyota-prius.png", true)
 vehicle1.anchorY = 0
 vehicle1.anchorx = 0
 vehicle1.y = _H*0.5
 vehicle1.x = _W*0.5
-vehicle1.MPG = 113.5
+vehicle1.MPG = 49.5
+vehicle1.name = "Toyota Prius"
 carGroup:insert(vehicle1)
 
 
-
+vehicleMPG = 0
 
 local function goToGPS (self, event)
 	if event.phase == "began" then
-			print(self.MPG)
+			vehicleMPG = self.MPG
+			print(self.name .. " - MPG: "..vehicleMPG)
+			composer.gotoScene( "gpsScreen", "fade", 400 )
 	end
 	return true
 end

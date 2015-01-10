@@ -7,9 +7,9 @@ _H = display.contentHeight
 
 local composer = require "composer"
 
-composer.gotoScene( "gpsScreen", "fade", 400 )
+composer.gotoScene( "manufacturerSelectScreen", "fade", 400 )
 
---manufacturerSelectScreen
+--
 --[[
 
 ramUsage = display.newText( "0", 0, 0, native.systemFont, 100 )

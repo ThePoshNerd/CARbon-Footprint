@@ -16,9 +16,11 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-carMakerGroup = display.newGroup()
-sceneGroup:insert( carMakerGroup )
+	carGroup = display.newGroup()
+	slideGroup = display.newGroup()
 
+	slideGroup:insert( carGroup )
+	sceneGroup:insert( slideGroup )
 
 
 
@@ -27,47 +29,56 @@ sceneGroup:insert( carMakerGroup )
 -----------------------------------------------------------
 
 
+
 local swipeTouchObj = display.newRect( 0, 0, 1080, 1920 )
 swipeTouchObj.x = _W*0.5
 swipeTouchObj.y = _H*0.5
 swipeTouchObj.alpha = 0.1
 sceneGroup:insert(swipeTouchObj)
 
-
 local nissanLogo = display.newImage("assets/carLogos/nissan.png", true)
-nissanLogo.anchorY = 0.5
-nissanLogo.anchorX = 0.5
-nissanLogo.yScale = 0.9
-nissanLogo.xScale = 0.9
-nissanLogo.y = _H*0.5
-nissanLogo.x = _W*0.5 - 256
-carMakerGroup:insert(nissanLogo)
+nissanLogo.anchorY = 0
+nissanLogo.anchorx = 0
+nissanLogo.y = 100
+nissanLogo.x = _W*0.5
+sceneGroup:insert(nissanLogo)
 
-local toyotaLogo = display.newImage("assets/carLogos/toyota.png", true)
-toyotaLogo.anchorY = 0.5
-toyotaLogo.anchorX = 0.5
-toyotaLogo.yScale = 0.9
-toyotaLogo.xScale = 0.9
-toyotaLogo.y = _H*0.5
-toyotaLogo.x = _W*0.5 + 256
-carMakerGroup:insert(toyotaLogo)
+local vehicle1 = display.newImage("assets/cars/nissan-leaf.png", true)
+vehicle1.anchorY = 0
+vehicle1.anchorx = 0
+vehicle1.y = _H*0.5
+vehicle1.x = _W*0.5
+vehicle1.MPG = 113.5
+vehicle1.name = "Nissan Leaf"
+carGroup:insert(vehicle1)
 
 
-local function goToNissanSelect (event)
+vehicleMPG = 0
+
+local function goToGPS (self, event)
 	if event.phase == "began" then
-		composer.gotoScene( "nissanSelectScreen", "fade", 400 )
+			vehicleMPG = self.MPG
+			print(self.name .. " - MPG: "..vehicleMPG)
+			composer.gotoScene( "gpsScreen", "fade", 400 )
 	end
+	return true
 end
 
-nissanLogo:addEventListener( "touch", goToNissanSelect )
 
-local function goToToyotaSelect (event)
-	if event.phase == "began" then
-		composer.gotoScene( "toyotaSelectScreen", "fade", 400 )
+local function activateTouch()
+
+	for a = carGroup.numChildren,1,-1  do
+
+			carGroup[a].touch = goToGPS
+			carGroup[a]:addEventListener( "touch", carGroup[a] )
 	end
 end
+activateTouch()
 
-toyotaLogo:addEventListener( "touch", goToToyotaSelect )
+
+
+
+
 
 
 
@@ -91,7 +102,7 @@ toyotaLogo:addEventListener( "touch", goToToyotaSelect )
 menuPos = 1
 
 local function saveGrpPos( event )
-	beginGrpPos = carMakerGroup.x
+	beginGrpPos = slideGroup.x
 	--print(beginGrpPos)
 end
 timer.performWithDelay(0, saveGrpPos, 1)
@@ -117,7 +128,7 @@ elseif "moved" == phase then
 movePointX = (event.x - event.xStart)
 --print("X Moved: "..movePointX)
 local dist = eventX-lastPos
-carMakerGroup.x = carMakerGroup.x+(dist)
+slideGroup.x = slideGroup.x+(dist)
 lastPos = eventX
 
 
@@ -126,26 +137,26 @@ elseif "ended" == phase or "cancelled" == phase then
 --swipeTouchObj.alpha = 0
 
 if movePointX < -xThreshold and menuPos == 1 then
-	movement = transition.to(  carMakerGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  slideGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos + 1
 	print("The Main Menu is at Screen " .. menuPos)
 
 
 elseif movePointX < -xThreshold and menuPos == 2 then
-	movement = transition.to(  carMakerGroup, {  time=500, x = -1080*2, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  slideGroup, {  time=500, x = -1080*2, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos + 1
 	print("The Main Menu is at Screen " .. menuPos)
 
 
 
 elseif movePointX > xThreshold and menuPos == 2 then
-	movement = transition.to(  carMakerGroup, {  time=500, x = 0, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  slideGroup, {  time=500, x = 0, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos - 1
 	print("The Main Menu is at Screen " .. menuPos)
 
 
 elseif movePointX > xThreshold and menuPos == 3 then
-	movement = transition.to(  carMakerGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  slideGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos - 1
 	print("The Main Menu is at Screen " .. menuPos)
 
@@ -157,11 +168,11 @@ else
 	--This is what causes the screen to 'spring' back when you're at the first or lst screen
 	--
 	if menuPos == 1 then
-		transition.to(  carMakerGroup, {  time=500, x = 0, transition = easing.outQuad } )
+		transition.to(  slideGroup, {  time=500, x = 0, transition = easing.outQuad } )
 		elseif menuPos == 2 then
-			transition.to(  carMakerGroup, {  time=500, x = -1080, transition = easing.outQuad } )
+			transition.to(  slideGroup, {  time=500, x = -1080, transition = easing.outQuad } )
 			elseif menuPos == 3 then
-				transition.to(  carMakerGroup, {  time=500, x = -2160, transition = easing.outQuad } )
+				transition.to(  slideGroup, {  time=500, x = -2160, transition = easing.outQuad } )
 			end
 		end
 	end
