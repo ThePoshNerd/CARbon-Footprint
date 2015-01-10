@@ -50,16 +50,19 @@ vehicle1.y = _H*0.5
 vehicle1.x = _W*0.5
 vehicle1.MPG = 113.5
 vehicle1.name = "Nissan Leaf"
+vehicle1.directory = "assets/cars/nissan-leaf.png"
 carGroup:insert(vehicle1)
 
 
 vehicleMPG = 0
+myVehiclePath = "0"
 
 local function goToGPS (self, event)
 	if event.phase == "began" then
-			vehicleMPG = self.MPG
-			print(self.name .. " - MPG: "..vehicleMPG)
-			composer.gotoScene( "gpsScreen", "fade", 400 )
+		vehicleMPG = self.MPG
+		myVehiclePath = self.directory
+		print(self.name .. " - MPG: "..vehicleMPG)
+		composer.gotoScene( "preDriveScreen", "fade", 400 )
 	end
 	return true
 end
