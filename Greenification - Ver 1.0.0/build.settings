@@ -1,16 +1,22 @@
 settings =
 {
-		android =
+	orientation =
+	{
+		default = "portrait",
+		supported = { "portrait" }
+	},
+	android =
+	{
+		googlePlayGamesAppId = "497459690107", -- Your Google Play Games App Id
+	},
+	plugins =
+	{
+		-- key is the name passed to Lua's 'require()'
+		["CoronaProvider.gameNetwork.google"] =
 		{
-				usesPermissions =
-				{
-						-- Permission to retrieve current location from the GPS.
-						"android.permission.ACCESS_FINE_LOCATION",
-
-						"android.permission.INTERNET",
-
-						-- Permission to retrieve current location from WiFi or cellular service.
-						"android.permission.ACCESS_COARSE_LOCATION",
-				},
+			-- required
+			publisherId = "com.coronalabs",
+			supportedPlatforms = { android = true }
 		},
+	},
 }

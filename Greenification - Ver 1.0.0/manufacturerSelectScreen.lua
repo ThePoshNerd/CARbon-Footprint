@@ -82,6 +82,65 @@ toyotaLogo:addEventListener( "touch", goToToyotaSelect )
 
 
 
+local widget = require "widget"
+
+
+
+-- Tries to automatically log in the user without displaying the login screen if the user doesn't want to login
+gameNetwork.request("login",
+{
+	userInitiated = false
+	})
+
+	local left = display.screenOriginX
+	local top = display.screenOriginY
+	local width = display.viewableContentWidth - display.viewableContentWidth/100
+	local size = display.viewableContentHeight/15
+	local buttonTextSize = display.viewableContentWidth/20
+
+
+	local loginLogoutButton
+	local function loginLogoutListener(event)
+		local function loginListener(event1)
+			-- Checks to see if there was an error with the login.
+			if event1.isError then
+				loginLogoutButton:setLabel("Login")
+			else
+				loginLogoutButton:setLabel("Logout")
+			end
+		end
+
+		if gameNetwork.request("isConnected") then
+			gameNetwork.request("logout")
+			loginLogoutButton:setLabel("Login")
+		else
+			-- Tries to login the user, if there is a problem then it will try to resolve it. eg. Show the log in screen.
+			gameNetwork.request("login",
+			{
+				listener = loginListener,
+				userInitiated = true
+				})
+			end
+		end
+
+
+		--login button
+		loginLogoutButton = widget.newButton
+		{
+			top = display.screenOriginY + display.viewableContentHeight - size,
+			left = left,
+			width = width,
+			height = size,
+			label = "Login",
+			fontSize = buttonTextSize,
+			onRelease = loginLogoutListener,
+		}
+
+		-- Checks if the auto login worked and if it did then change the text on the button
+		if gameNetwork.request("isConnected") then
+			loginLogoutButton:setLabel("Logout")
+		end
+
 
 -----------------------------------------------------------
 ----------------Swipe Function-----------------------------

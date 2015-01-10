@@ -2,34 +2,60 @@ local composer = require( "composer" )
 
 local scene = composer.newScene()
 
+local save5Achieve = "CgkI-_Shl70OEAIQAg"
+local save10Achieve = "CgkI-_Shl70OEAIQAw"
+local save20Achieve = "CgkI-_Shl70OEAIQBA"
+
+local drive25Achieve = "CgkI-_Shl70OEAIQBQ"
+local drive50Achieve = "CgkI-_Shl70OEAIQBg"
+
 
 -- "scene:create()"
 function scene:create( event )
 
   local sceneGroup = self.view
 
-  
 
-  local myVehicle = display.newImage(myVehiclePath or "assets/cars/toyota-prius.png", true)
-  myVehicle.anchorY = 0
-  myVehicle.anchorx = 0
-  myVehicle.y = _H*0.5
-  myVehicle.x = _W*0.5
-  sceneGroup:insert(myVehicle)
+
+
+
+    local startDriveButton = display.newCircle( 100, 100, 256 )
+    startDriveButton.x = _W*0.5
+    startDriveButton.y = _H*0.5
+    sceneGroup:insert(startDriveButton)
+
+
+    local function goToDriveScreen (event)
+      if event.phase == "began" then
+        gameNetwork.show("leaderboards")
+      end
+    end
+
+    startDriveButton:addEventListener( "touch", goToDriveScreen )
+
+
 
   local moneySavedText = display.newText( "0", 0, 0, native.systemFont, 100 )
   moneySavedText.x = _W*0.5
-  moneySavedText.y = _H*0.5-300
+  moneySavedText.y = _H*0.5-500
   moneySavedText:setFillColor( 1, 1, 1 )
-  moneySavedText.anchorX = 0
+  moneySavedText.anchorX = 0.5
   sceneGroup:insert(moneySavedText)
 
   local mpgText = display.newText( "0", 0, 0, native.systemFont, 100 )
-  mpgText.x = _W*0.5
+  mpgText.x = _W*0.5 + 360
   mpgText.y = _H*0.5-500
   mpgText:setFillColor( 1, 1, 1 )
-  mpgText.anchorX = 0
+  mpgText.anchorX = 0.5
   sceneGroup:insert(mpgText)
+
+
+  local milesDrivenText = display.newText( "0", 0, 0, native.systemFont, 100 )
+  milesDrivenText.x = _W*0.5 - 360
+  milesDrivenText.y = _H*0.5-500
+  milesDrivenText:setFillColor( 1, 1, 1 )
+  milesDrivenText.anchorX = 0.5
+  sceneGroup:insert(milesDrivenText)
 
 
 
@@ -49,7 +75,8 @@ function scene:create( event )
   local simulatedSpentOnFuel
 
   local moneyDifference
-
+  local moneyDifferenceTemp = 0
+  local moneyDifferenceRounded = 0
 
 
   local function addSavings()
@@ -57,22 +84,28 @@ function scene:create( event )
     local digits = 2
     local shift = 10 ^ digits
 
+
     moneyDifferenceRounded = math.floor( moneyDifference*shift + 0.5 )/shift
-    moneySavedText.text = moneySavedText.text + moneyDifferenceRounded
+    moneyDifferenceTemp = moneyDifferenceTemp + moneyDifferenceRounded
+
+    moneySavedText.text = ("$" .. moneyDifferenceTemp)
 
     if estimatedFuelUsed > simulatedFuelUsed then
       print("Total Savings: " .. "$" .. moneyDifferenceRounded)
 
-      elseif estimatedFuelUsed < simulatedFuelUsed then
-        print("Total Lost: " .. "$" .. math.abs(moneyDifferenceRounded))
-      end
+    elseif estimatedFuelUsed < simulatedFuelUsed then
+      print("Total Lost: " .. "$" .. math.abs(moneyDifferenceRounded))
     end
+  end
 
 
 
-    local function calcMPG()
+  local function calcMPG()
 
-      milesDriven = milesDriven + 1
+    milesDriven = milesDriven + 1
+    milesDrivenText.text = milesDriven
+
+    if milesDriven >= 2 then
 
       --Actual Fuel Math Functions
 
@@ -101,12 +134,13 @@ function scene:create( event )
       mpgText.text = math.round(simulatedMPG*10)*0.1
 
       moneyDifference = (estimatedSpentOnFuel - simulatedSpentOnFuel)
-
       addSavings()
     end
 
-    calcMPG()
-    timer.performWithDelay(1000, calcMPG, 0) --After every mile
+  end
+
+  calcMPG()
+  timer.performWithDelay(2000, calcMPG, 0) --After every mile
 
 
 
@@ -152,7 +186,7 @@ function scene:create( event )
 
     calcDist()
 
-
+--[[
 
     local myMap = native.newMapView( 0, 0, 320, 480 )
     myMap.x = display.contentCenterX
@@ -168,7 +202,7 @@ function scene:create( event )
     else
       locationtxt.text = locationtxt.text .. locationTable.latitude .. ", " ..locationTable.longitude
     end
-
+--]]
 
   end
 

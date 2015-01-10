@@ -4,6 +4,8 @@ display.setStatusBar( display.HiddenStatusBar )
 _W = display.contentWidth
 _H = display.contentHeight
 
+gameNetwork = require "gameNetwork"
+gameNetwork.init("google")
 
 local composer = require "composer"
 
