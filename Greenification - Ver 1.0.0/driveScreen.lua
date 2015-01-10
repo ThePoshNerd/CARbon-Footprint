@@ -19,19 +19,6 @@ function scene:create( event )
 
 
 
-    local startDriveButton = display.newCircle( 100, 100, 256 )
-    startDriveButton.x = _W*0.5
-    startDriveButton.y = _H*0.5
-    sceneGroup:insert(startDriveButton)
-
-
-    local function goToDriveScreen (event)
-      if event.phase == "began" then
-        gameNetwork.show("leaderboards")
-      end
-    end
-
-    startDriveButton:addEventListener( "touch", goToDriveScreen )
 
 
 
@@ -77,6 +64,32 @@ function scene:create( event )
   local moneyDifference
   local moneyDifferenceTemp = 0
   local moneyDifferenceRounded = 0
+
+
+
+  local function achievementListener()
+
+    if milesDriven == 25 then
+      gameNetwork.request("unlockAchievement",
+      {
+        achievement =
+        {
+          identifier = drive25Achieve
+        }
+        })
+      end
+
+      if milesDriven == 50 then
+        gameNetwork.request("unlockAchievement",
+        {
+          achievement =
+          {
+            identifier = drive55Achieve
+          }
+        })
+      end
+  end
+
 
 
   local function addSavings()
@@ -135,12 +148,13 @@ function scene:create( event )
 
       moneyDifference = (estimatedSpentOnFuel - simulatedSpentOnFuel)
       addSavings()
+      achievementListener()
     end
 
   end
 
   calcMPG()
-  timer.performWithDelay(2000, calcMPG, 0) --After every mile
+  timer.performWithDelay(1000, calcMPG, 0) --After every mile
 
 
 

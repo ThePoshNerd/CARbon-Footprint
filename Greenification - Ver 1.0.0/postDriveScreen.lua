@@ -1,10 +1,12 @@
 local composer = require( "composer" )
 
-local gameNetwork = require "gameNetwork"
-gameNetwork.init("google")
 
-local leaderboardId = "CgkI-_Shl70OEAIQAQ" 
-local achievementId = "CgkI-_Shl70OEAIQAg"
+local save5Achieve = "CgkI-_Shl70OEAIQAg"
+local save10Achieve = "CgkI-_Shl70OEAIQAw"
+local save20Achieve = "CgkI-_Shl70OEAIQBA"
+
+local drive25Achieve = "CgkI-_Shl70OEAIQBQ"
+local drive50Achieve = "CgkI-_Shl70OEAIQBg"
 
 
 local scene = composer.newScene()
@@ -35,19 +37,20 @@ myVehicle.x = _W*0.5
 sceneGroup:insert(myVehicle)
 
 
-local startDriveButton = display.newCircle( 100, 100, 256 )
-startDriveButton.x = _W*0.5
-startDriveButton.y = _H*0.5
-sceneGroup:insert(startDriveButton)
+local leaderboardButton = display.newCircle( 100, 100, 256 )
+leaderboardButton.x = _W*0.5
+leaderboardButton.y = _H*0.5
+sceneGroup:insert(leaderboardButton)
 
 
 local function goToDriveScreen (event)
 	if event.phase == "began" then
-		composer.gotoScene( "driveScreen", "fade", 400 )
+		gameNetwork.show("leaderboards")
 	end
 end
 
-startDriveButton:addEventListener( "touch", goToDriveScreen )
+leaderboardButton:addEventListener( "touch", goToDriveScreen )
+
 
 ---------------------------------------
 ---------------------------------------------------------------------------------
