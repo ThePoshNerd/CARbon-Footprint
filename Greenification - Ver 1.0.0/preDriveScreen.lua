@@ -34,6 +34,19 @@ sceneGroup:insert(header)
 
 
 
+local backButton = display.newImage("assets/backArrow.png", true)
+backButton.x = 90
+backButton.y = 80
+sceneGroup:insert(backButton)
+
+local function goBack (event)
+	if event.phase == "began" then
+		composer.gotoScene( "manufacturerSelectScreen", "fade", 400 )
+	end
+end
+
+backButton:addEventListener( "touch", goBack )
+
 
 local startDriveButton = display.newImage("assets/driveButton.png", true)
 startDriveButton.x = _W*0.5

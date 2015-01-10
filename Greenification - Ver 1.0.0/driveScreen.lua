@@ -22,10 +22,9 @@ function scene:create( event )
 
 
 
-  local endDriveButton = display.newCircle( 100, 100, 50 )
-  endDriveButton.x = _W - 100
-  endDriveButton.y = 100
-  sceneGroup:insert(endDriveButton)
+
+
+
 
   local background = display.newRect( 0, 0, 1080, 1920 )
   background.x = _W*0.5
@@ -39,26 +38,39 @@ function scene:create( event )
   driveMenu.x = _W*0.5
   sceneGroup:insert(driveMenu)
 
+  local endDriveButton = display.newImage("assets/checkmark.png", true)
+  endDriveButton.x = 990
+  endDriveButton.y = 80
+  sceneGroup:insert(endDriveButton)
+
+
+  local footprintText = display.newText( "0", 0, 0, native.systemFont, 200 )
+  footprintText.x = _W*0.5
+  footprintText.y = _H*0.5 - 570
+  footprintText:setFillColor( 1, 1, 1 )
+  footprintText.anchorX = 0.5
+  sceneGroup:insert(footprintText)
+
 
   local moneySavedText = display.newText( "0", 0, 0, native.systemFont, 100 )
   moneySavedText.x = _W*0.5
-  moneySavedText.y = _H*0.5-500
+  moneySavedText.y = _H*0.5 - 25
   moneySavedText:setFillColor( 1, 1, 1 )
   moneySavedText.anchorX = 0.5
   sceneGroup:insert(moneySavedText)
 
   local mpgText = display.newText( "0", 0, 0, native.systemFont, 100 )
-  mpgText.x = _W*0.5 + 360
-  mpgText.y = _H*0.5-500
-  mpgText:setFillColor( 1, 1, 1 )
+  mpgText.x = _W*0.5 + 380
+  mpgText.y = _H*0.5 - 20
+  mpgText:setFillColor( .3, .3, .3 )
   mpgText.anchorX = 0.5
   sceneGroup:insert(mpgText)
 
 
   local milesDrivenText = display.newText( "0", 0, 0, native.systemFont, 100 )
-  milesDrivenText.x = _W*0.5 - 360
-  milesDrivenText.y = _H*0.5-500
-  milesDrivenText:setFillColor( 1, 1, 1 )
+  milesDrivenText.x = _W*0.5 - 380
+  milesDrivenText.y = _H*0.5 - 20
+  milesDrivenText:setFillColor( .3, .3, .3 )
   milesDrivenText.anchorX = 0.5
   sceneGroup:insert(milesDrivenText)
 
@@ -73,13 +85,14 @@ function scene:create( event )
   local mpgAverage = 0
   local mpgAverageTemp = 0
 
-  local estimatedMPG = vehicleMPG or 0
+  local estimatedMPG = vehicleMPG or 55
   local estimatedFuelUsed
   local estimatedSpentOnFuel
 
   local simulatedMPG
   local simulatedFuelUsed
   local simulatedSpentOnFuel
+  local simulatedFootprint = 0
 
   local moneyDifference
   local moneyDifferenceTemp = 0
@@ -165,6 +178,14 @@ function scene:create( event )
       --print("Simulated MPG: " .. simulatedMPG )
 
       mpgText.text = math.round(simulatedMPG*10)*0.1
+
+
+
+      simulatedFootprint = simulatedFootprint + math.random(1, 3)/1000
+
+      footprintText.text = (simulatedFootprint .. " Tons" )
+
+
 
       mpgAverageTemp = mpgAverageTemp + simulatedMPG
 
@@ -268,9 +289,10 @@ function scene:create( event )
 
 
 
-    local myMap = native.newMapView( 0, 0, 320, 480 )
-    myMap.x = display.contentCenterX
-    myMap.y = display.contentCenterY
+    local myMap = native.newMapView( 0, 0, 950, 480 )
+    myMap.x = _H*0.5
+    myMap.y = 1360
+    myMap:setCenter( 36.999385, -122.053060 )
 
     local locationTable  = myMap:getUserLocation()
     local locationtxt = display.newText( "My location is: ", 0, 0, native.systemFont, 16 )

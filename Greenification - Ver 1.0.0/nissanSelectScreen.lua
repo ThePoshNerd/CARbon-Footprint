@@ -53,10 +53,15 @@ carGroup:insert(vehicle1)
 
 vehicleMPG = 113.5
 
-local preDriveButton = display.newCircle( 100, 100, 75 )
-preDriveButton.x = 1000
-preDriveButton.y = 100
-preDriveButton.alpha = 0.1
+
+
+
+
+
+
+local preDriveButton = display.newImage("assets/checkmark.png", true)
+preDriveButton.x = 990
+preDriveButton.y = 80
 sceneGroup:insert(preDriveButton)
 
 local function goToDriveScreen (event)
@@ -66,6 +71,20 @@ local function goToDriveScreen (event)
 end
 
 preDriveButton:addEventListener( "touch", goToDriveScreen )
+
+
+local backButton = display.newImage("assets/backArrow.png", true)
+backButton.x = 90
+backButton.y = 80
+sceneGroup:insert(backButton)
+
+local function goBack (event)
+	if event.phase == "began" then
+		composer.gotoScene( "manufacturerSelectScreen", "fade", 400 )
+	end
+end
+
+backButton:addEventListener( "touch", goBack )
 
 
 
