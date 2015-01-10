@@ -44,7 +44,7 @@ carMakerGroup:insert(nissanLogo)
 
 local function goToCarSelect (event)
 	if event.phase == "began" then
-
+	composer.gotoScene( "carSelectScreen", "fade", 400 )
 	end
 end
 

@@ -16,9 +16,11 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-carGroup = display.newGroup()
-sceneGroup:insert( carGroup )
+	carGroup = display.newGroup()
+	slideGroup = display.newGroup()
 
+	slideGroup:insert( carGroup )
+	sceneGroup:insert( slideGroup )
 
 
 
@@ -46,23 +48,29 @@ vehicle1.anchorY = 0
 vehicle1.anchorx = 0
 vehicle1.y = _H*0.5
 vehicle1.x = _W*0.5
+vehicle1.MPG = 113.5
 carGroup:insert(vehicle1)
 
 
 
 
-local function goToGPS (event)
+local function goToGPS (self, event)
 	if event.phase == "began" then
-
+			print(self.MPG)
 	end
+	return true
 end
 
-vehicle1:addEventListener( "touch", goToGPS )
 
+local function activateTouch()
 
+	for a = carGroup.numChildren,1,-1  do
 
-
-
+			carGroup[a].touch = goToGPS
+			carGroup[a]:addEventListener( "touch", carGroup[a] )
+	end
+end
+activateTouch()
 
 
 
@@ -91,7 +99,7 @@ vehicle1:addEventListener( "touch", goToGPS )
 menuPos = 1
 
 local function saveGrpPos( event )
-	beginGrpPos = carGroup.x
+	beginGrpPos = slideGroup.x
 	--print(beginGrpPos)
 end
 timer.performWithDelay(0, saveGrpPos, 1)
@@ -117,7 +125,7 @@ elseif "moved" == phase then
 movePointX = (event.x - event.xStart)
 --print("X Moved: "..movePointX)
 local dist = eventX-lastPos
-carGroup.x = carGroup.x+(dist)
+slideGroup.x = slideGroup.x+(dist)
 lastPos = eventX
 
 
@@ -126,26 +134,26 @@ elseif "ended" == phase or "cancelled" == phase then
 --swipeTouchObj.alpha = 0
 
 if movePointX < -xThreshold and menuPos == 1 then
-	movement = transition.to(  carGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  slideGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos + 1
 	print("The Main Menu is at Screen " .. menuPos)
 
 
 elseif movePointX < -xThreshold and menuPos == 2 then
-	movement = transition.to(  carGroup, {  time=500, x = -1080*2, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  slideGroup, {  time=500, x = -1080*2, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos + 1
 	print("The Main Menu is at Screen " .. menuPos)
 
 
 
 elseif movePointX > xThreshold and menuPos == 2 then
-	movement = transition.to(  carGroup, {  time=500, x = 0, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  slideGroup, {  time=500, x = 0, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos - 1
 	print("The Main Menu is at Screen " .. menuPos)
 
 
 elseif movePointX > xThreshold and menuPos == 3 then
-	movement = transition.to(  carGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  slideGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos - 1
 	print("The Main Menu is at Screen " .. menuPos)
 
@@ -157,11 +165,11 @@ else
 	--This is what causes the screen to 'spring' back when you're at the first or lst screen
 	--
 	if menuPos == 1 then
-		transition.to(  carGroup, {  time=500, x = 0, transition = easing.outQuad } )
+		transition.to(  slideGroup, {  time=500, x = 0, transition = easing.outQuad } )
 		elseif menuPos == 2 then
-			transition.to(  carGroup, {  time=500, x = -1080, transition = easing.outQuad } )
+			transition.to(  slideGroup, {  time=500, x = -1080, transition = easing.outQuad } )
 			elseif menuPos == 3 then
-				transition.to(  carGroup, {  time=500, x = -2160, transition = easing.outQuad } )
+				transition.to(  slideGroup, {  time=500, x = -2160, transition = easing.outQuad } )
 			end
 		end
 	end
