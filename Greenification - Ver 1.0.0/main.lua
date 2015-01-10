@@ -9,7 +9,7 @@ gameNetwork.init("google")
 
 local composer = require "composer"
 
-composer.gotoScene( "postDriveScreen", "fade", 400 )
+composer.gotoScene( "manufacturerSelectScreen", "fade", 400 )
 
 --
 --[[

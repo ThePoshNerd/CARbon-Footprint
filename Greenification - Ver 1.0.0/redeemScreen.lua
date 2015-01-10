@@ -29,57 +29,28 @@ carMakerGroup = display.newGroup()
 sceneGroup:insert( carMakerGroup )
 
 
-local postDriveMenu = display.newImage("assets/menus/postDriveScreen.png", true)
-postDriveMenu.anchorY = 0.5
-postDriveMenu.anchorX = 0.5
-postDriveMenu.y = _H*0.5
-postDriveMenu.x = _W*0.5
-sceneGroup:insert(postDriveMenu)
+local redeemMenu = display.newImage("assets/menus/redeemGreenCoin.png", true)
+redeemMenu.anchorY = 0.5
+redeemMenu.anchorX = 0.5
+redeemMenu.y = _H*0.5
+redeemMenu.x = _W*0.5
+sceneGroup:insert(redeemMenu)
 
-local leaderboardButton = display.newRect( 0, 0, 860, 250 )
-leaderboardButton.x = _W*0.5
-leaderboardButton.y = _H*0.5 - 75
-leaderboardButton.alpha = 0.1
-sceneGroup:insert(leaderboardButton)
+local backButton = display.newImage("assets/backArrow.png", true)
+backButton.x = 90
+backButton.y = 80
+sceneGroup:insert(backButton)
 
-local redeemButton = display.newRect( 0, 0, 860, 250 )
-redeemButton.x = _W*0.5
-redeemButton.y = _H*0.5 + 275
-redeemButton.alpha = 0.1
-sceneGroup:insert(redeemButton)
-
-
-local newDriveButton = display.newRect( 0, 0, 860, 250 )
-newDriveButton.x = _W*0.5
-newDriveButton.y = _H*0.5 + 615
-newDriveButton.alpha = 0.1
-sceneGroup:insert(newDriveButton)
-
-
-local function showLeaderboard (event)
+local function goBack (event)
 	if event.phase == "began" then
-		gameNetwork.show("leaderboards")
+		composer.gotoScene( "postDriveScreen", "fade", 400 )
 	end
 end
 
-leaderboardButton:addEventListener( "touch", showLeaderboard )
-
-local function goToRedeemScreen (event)
-	if event.phase == "began" then
-		composer.gotoScene( "redeemScreen", "fade", 400 )
-	end
-end
-
-redeemButton:addEventListener( "touch", goToRedeemScreen )
+backButton:addEventListener( "touch", goBack )
 
 
-local function newDrive (event)
-	if event.phase == "began" then
-		composer.gotoScene( "preDriveScreen", "fade", 400 )
-	end
-end
 
-newDriveButton:addEventListener( "touch", newDrive )
 
 
 ---------------------------------------

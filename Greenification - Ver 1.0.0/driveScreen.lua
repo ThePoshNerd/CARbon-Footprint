@@ -9,8 +9,8 @@ local save20Achieve = "CgkI-_Shl70OEAIQBA"
 local drive25Achieve = "CgkI-_Shl70OEAIQBQ"
 local drive50Achieve = "CgkI-_Shl70OEAIQBg"
 
-local effUnder50Board = "CgkI-_Shl70OEAIQCQ"
-local effOver50Board = "CgkI-_Shl70OEAIQAQ"
+local economyVeh = "CgkI-_Shl70OEAIQCQ"
+local electricVeh = "CgkI-_Shl70OEAIQAQ"
 local moneySavedBoard = "CgkI-_Shl70OEAIQCA"
 
 
@@ -221,13 +221,21 @@ function scene:create( event )
       mpgAverage = math.round(mpgAverageTemp/milesDriven*10)*0.1
       print(mpgAverage)
 
-
+      gameNetwork.request("setHighScore",
+      {
+        localPlayerScore =
+        {
+          category = electricVeh, -- Id of the leaderboard to submit the score into
+          value = mpgAverage -- The score to submit
+        }
+        })
+--[[
       if milesDriven >= 2 and milesDriven <= 50 then
         gameNetwork.request("setHighScore",
         {
           localPlayerScore =
           {
-            category = effUnder50Board, -- Id of the leaderboard to submit the score into
+            category = electricVeh, -- Id of the leaderboard to submit the score into
             value = mpgAverage -- The score to submit
           }
         })
@@ -243,17 +251,19 @@ function scene:create( event )
             }
           })
       end
-
+--]]
       --Publish Money Saved
+
+      moneySavedToSubmit = moneyDifferenceTemp*1000000
       gameNetwork.request("setHighScore",
       {
         localPlayerScore =
         {
           category = moneySavedBoard, -- Id of the leaderboard to submit the score into
-          value = moneyDifferenceTemp -- The score to submit
+          value = moneySavedToSubmit -- The score to submit
         }
       })
-      print(moneyDifferenceTemp)
+      print(moneySavedToSubmit)
 
       composer.gotoScene( "postDriveScreen", "fade", 400 )
     end
@@ -293,21 +303,22 @@ function scene:create( event )
     sceneGroup:insert(etst)
 --]]
     local myMap = native.newMapView( 0, 0, 950, 480 )
-    myMap.x = _H*0.5
+    myMap.x = 65
     myMap.y = 1600
     myMap:setCenter( 36.999385, -122.053060 )
+    sceneGroup:insert(myMap)
 
     local locationTable  = myMap:getUserLocation()
     local locationtxt = display.newText( "My location is: ", 0, 0, native.systemFont, 16 )
     locationtxt.x = display.contentCenterX
     locationtxt.y = display.contentCenterY+ 500
-
+--[[
     if ( locationTable.errorCode ) then
       locationtxt.text = locationtxt.text .. locationTable.errorMessage
     else
       locationtxt.text = locationtxt.text .. locationTable.latitude .. ", " ..locationTable.longitude
     end
-
+--]]
 
   end
 
