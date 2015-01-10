@@ -29,56 +29,43 @@ function scene:create( event )
 -----------------------------------------------------------
 
 
+local carTypeMenu = display.newImage("assets/menus/carType/nissanLeafMenu.png", true)
+carTypeMenu.anchorY = 0.5
+carTypeMenu.anchorX = 0.5
+carTypeMenu.y = _H*0.5
+carTypeMenu.x = _W*0.5
+carGroup:insert(carTypeMenu)
 
-local swipeTouchObj = display.newRect( 0, 0, 1080, 1920 )
-swipeTouchObj.x = _W*0.5
-swipeTouchObj.y = _H*0.5
-swipeTouchObj.alpha = 0.1
-sceneGroup:insert(swipeTouchObj)
 
-local nissanLogo = display.newImage("assets/carLogos/nissan.png", true)
-nissanLogo.anchorY = 0
-nissanLogo.anchorx = 0
-nissanLogo.y = 100
-nissanLogo.x = _W*0.5
-sceneGroup:insert(nissanLogo)
 
 local vehicle1 = display.newImage("assets/cars/nissan-leaf.png", true)
 vehicle1.anchorY = 0
 vehicle1.anchorx = 0
-vehicle1.y = _H*0.5
+vehicle1.y = _H*0.5 - 400
 vehicle1.x = _W*0.5
+vehicle1.yScale = 1.5
+vehicle1.xScale = 1.5
 vehicle1.MPG = 113.5
 vehicle1.name = "Nissan Leaf"
 vehicle1.directory = "assets/cars/nissan-leaf.png"
 carGroup:insert(vehicle1)
 
 
-vehicleMPG = 0
-myVehiclePath = "0"
+vehicleMPG = 113.5
 
-local function goToGPS (self, event)
+local preDriveButton = display.newCircle( 100, 100, 75 )
+preDriveButton.x = 1000
+preDriveButton.y = 100
+preDriveButton.alpha = 0.1
+sceneGroup:insert(preDriveButton)
+
+local function goToDriveScreen (event)
 	if event.phase == "began" then
-		vehicleMPG = self.MPG
-		myVehiclePath = self.directory
-		print(self.name .. " - MPG: "..vehicleMPG)
 		composer.gotoScene( "preDriveScreen", "fade", 400 )
 	end
-	return true
 end
 
-
-local function activateTouch()
-
-	for a = carGroup.numChildren,1,-1  do
-
-			carGroup[a].touch = goToGPS
-			carGroup[a]:addEventListener( "touch", carGroup[a] )
-	end
-end
-activateTouch()
-
-
+preDriveButton:addEventListener( "touch", goToDriveScreen )
 
 
 
@@ -181,7 +168,7 @@ else
 	end
 end
 
-swipeTouchObj:addEventListener( "touch", screenSwipe )
+--swipeTouchObj:addEventListener( "touch", screenSwipe )
 
 
 end

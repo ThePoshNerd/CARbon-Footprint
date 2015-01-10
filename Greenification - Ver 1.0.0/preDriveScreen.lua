@@ -19,16 +19,23 @@ function scene:create( event )
 carMakerGroup = display.newGroup()
 sceneGroup:insert( carMakerGroup )
 
-
-local myVehicle = display.newImage(myVehiclePath or "assets/cars/toyota-prius.png", true)
-myVehicle.anchorY = 0
-myVehicle.anchorX = 0.5
-myVehicle.y = _H*0.5 + 500
-myVehicle.x = _W*0.5
-sceneGroup:insert(myVehicle)
+local background = display.newRect( 0, 0, 1080, 1920 )
+background.x = _W*0.5
+background.y = _H*0.5
+sceneGroup:insert(background)
 
 
-local startDriveButton = display.newCircle( 100, 100, 256 )
+local header = display.newImage("assets/menus/driveHeader.png", true)
+header.anchorY = 0
+header.anchorX = 0
+header.x = 0
+header.y = 0
+sceneGroup:insert(header)
+
+
+
+
+local startDriveButton = display.newImage("assets/driveButton.png", true)
 startDriveButton.x = _W*0.5
 startDriveButton.y = _H*0.5
 sceneGroup:insert(startDriveButton)
@@ -51,6 +58,64 @@ startDriveButton:addEventListener( "touch", goToDriveScreen )
 ---------------------------------------
 
 
+local widget = require "widget"
+
+
+
+-- Tries to automatically log in the user without displaying the login screen if the user doesn't want to login
+gameNetwork.request("login",
+{
+	userInitiated = false
+	})
+
+	local left = display.screenOriginX
+	local top = display.screenOriginY
+	local width = display.viewableContentWidth - display.viewableContentWidth/100
+	local size = display.viewableContentHeight/15
+	local buttonTextSize = display.viewableContentWidth/20
+
+
+	local loginLogoutButton
+	local function loginLogoutListener(event)
+		local function loginListener(event1)
+			-- Checks to see if there was an error with the login.
+			if event1.isError then
+				loginLogoutButton:setLabel("Login")
+			else
+				loginLogoutButton:setLabel("Logout")
+			end
+		end
+
+		if gameNetwork.request("isConnected") then
+			gameNetwork.request("logout")
+			loginLogoutButton:setLabel("Login")
+		else
+			-- Tries to login the user, if there is a problem then it will try to resolve it. eg. Show the log in screen.
+			gameNetwork.request("login",
+			{
+				listener = loginListener,
+				userInitiated = true
+				})
+			end
+		end
+
+
+		--login button
+		loginLogoutButton = widget.newButton
+		{
+			top = display.screenOriginY + display.viewableContentHeight - size,
+			left = left,
+			width = width,
+			height = size,
+			label = "Login",
+			fontSize = buttonTextSize,
+			onRelease = loginLogoutListener,
+		}
+
+		-- Checks if the auto login worked and if it did then change the text on the button
+		if gameNetwork.request("isConnected") then
+			loginLogoutButton:setLabel("Logout")
+		end
 
 
 

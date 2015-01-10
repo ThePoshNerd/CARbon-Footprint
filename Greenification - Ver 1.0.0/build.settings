@@ -1,4 +1,4 @@
-settings =
+settings = 
 {
 	orientation =
 	{
@@ -8,6 +8,28 @@ settings =
 	android =
 	{
 		googlePlayGamesAppId = "497459690107", -- Your Google Play Games App Id
+
+		usesPermissions =
+				{
+						"android.permission.INTERNET",
+
+						--optional permission used to display current location via the GPS
+						"android.permission.ACCESS_FINE_LOCATION",
+
+						--optional permission used to display current location via WiFi or cellular service
+						"android.permission.ACCESS_COARSE_LOCATION",
+				},
+				usesFeatures =
+				{
+						-- If you set permissions "ACCESS_FINE_LOCATION" and "ACCESS_COARSE_LOCATION" above,
+						-- you may want to set up your app to not require location services as follows.
+						-- Otherwise, devices that do not have location sevices (such as a GPS) will be unable
+						-- to purchase this app in the app store.
+						{ name = "android.hardware.location", required = false },
+						{ name = "android.hardware.location.gps", required = false },
+						{ name = "android.hardware.location.network", required = false }
+				},
+
 	},
 	plugins =
 	{

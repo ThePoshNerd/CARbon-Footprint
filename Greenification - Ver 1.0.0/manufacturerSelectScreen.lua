@@ -16,8 +16,8 @@ function scene:create( event )
 
 	local sceneGroup = self.view
 
-carMakerGroup = display.newGroup()
-sceneGroup:insert( carMakerGroup )
+carMakeGroup = display.newGroup()
+sceneGroup:insert( carMakeGroup )
 
 
 
@@ -27,48 +27,31 @@ sceneGroup:insert( carMakerGroup )
 -----------------------------------------------------------
 
 
-local swipeTouchObj = display.newRect( 0, 0, 1080, 1920 )
-swipeTouchObj.x = _W*0.5
-swipeTouchObj.y = _H*0.5
-swipeTouchObj.alpha = 0.1
-sceneGroup:insert(swipeTouchObj)
+local teslaButton = display.newRect( 0, 0, 1080, 340 )
+teslaButton.x = _W*0.5
+teslaButton.y = 345
+teslaButton.alpha = 0.1
+sceneGroup:insert(teslaButton)
+
+local nissanButton = display.newRect( 0, 0, 1080, 340 )
+nissanButton.x = _W*0.5
+nissanButton.y = 345*2
+nissanButton.alpha = 0.1
+sceneGroup:insert(nissanButton)
+
+local hondaButton = display.newRect( 0, 0, 1080, 340 )
+hondaButton.x = _W*0.5
+hondaButton.y = 345*3
+hondaButton.alpha = 0.1
+sceneGroup:insert(hondaButton)
 
 
-local nissanLogo = display.newImage("assets/carLogos/nissan.png", true)
-nissanLogo.anchorY = 0.5
-nissanLogo.anchorX = 0.5
-nissanLogo.yScale = 0.9
-nissanLogo.xScale = 0.9
-nissanLogo.y = _H*0.5 - 512
-nissanLogo.x = _W*0.5 - 256
-carMakerGroup:insert(nissanLogo)
-
-local toyotaLogo = display.newImage("assets/carLogos/toyota.png", true)
-toyotaLogo.anchorY = 0.5
-toyotaLogo.anchorX = 0.5
-toyotaLogo.yScale = 0.9
-toyotaLogo.xScale = 0.9
-toyotaLogo.y = _H*0.5 - 512
-toyotaLogo.x = _W*0.5 + 256
-carMakerGroup:insert(toyotaLogo)
-
-local fordLogo = display.newImage("assets/carLogos/ford.png", true)
-fordLogo.anchorY = 0.5
-fordLogo.anchorX = 0.5
-fordLogo.yScale = 0.9
-fordLogo.xScale = 0.9
-fordLogo.y = _H*0.5
-fordLogo.x = _W*0.5 + 256
-carMakerGroup:insert(fordLogo)
-
-local hondaLogo = display.newImage("assets/carLogos/honda.png", true)
-hondaLogo.anchorY = 0.5
-hondaLogo.anchorX = 0.5
-hondaLogo.yScale = 0.9
-hondaLogo.xScale = 0.9
-hondaLogo.y = _H*0.5
-hondaLogo.x = _W*0.5 - 256
-carMakerGroup:insert(hondaLogo)
+local carMakeMenu = display.newImage("assets/menus/carMake.png", true)
+carMakeMenu.anchorY = 0.5
+carMakeMenu.anchorX = 0.5
+carMakeMenu.y = _H*0.5
+carMakeMenu.x = _W*0.5
+carMakeGroup:insert(carMakeMenu)
 
 
 
@@ -80,7 +63,7 @@ local function goToNissanSelect (event)
 	end
 end
 
-nissanLogo:addEventListener( "touch", goToNissanSelect )
+nissanButton:addEventListener( "touch", goToNissanSelect )
 
 local function goToToyotaSelect (event)
 	if event.phase == "began" then
@@ -88,7 +71,7 @@ local function goToToyotaSelect (event)
 	end
 end
 
-toyotaLogo:addEventListener( "touch", goToToyotaSelect )
+--toyotaLogo:addEventListener( "touch", goToToyotaSelect )
 
 
 
@@ -103,64 +86,6 @@ toyotaLogo:addEventListener( "touch", goToToyotaSelect )
 
 
 
-local widget = require "widget"
-
-
-
--- Tries to automatically log in the user without displaying the login screen if the user doesn't want to login
-gameNetwork.request("login",
-{
-	userInitiated = false
-	})
-
-	local left = display.screenOriginX
-	local top = display.screenOriginY
-	local width = display.viewableContentWidth - display.viewableContentWidth/100
-	local size = display.viewableContentHeight/15
-	local buttonTextSize = display.viewableContentWidth/20
-
-
-	local loginLogoutButton
-	local function loginLogoutListener(event)
-		local function loginListener(event1)
-			-- Checks to see if there was an error with the login.
-			if event1.isError then
-				loginLogoutButton:setLabel("Login")
-			else
-				loginLogoutButton:setLabel("Logout")
-			end
-		end
-
-		if gameNetwork.request("isConnected") then
-			gameNetwork.request("logout")
-			loginLogoutButton:setLabel("Login")
-		else
-			-- Tries to login the user, if there is a problem then it will try to resolve it. eg. Show the log in screen.
-			gameNetwork.request("login",
-			{
-				listener = loginListener,
-				userInitiated = true
-				})
-			end
-		end
-
-
-		--login button
-		loginLogoutButton = widget.newButton
-		{
-			top = display.screenOriginY + display.viewableContentHeight - size,
-			left = left,
-			width = width,
-			height = size,
-			label = "Login",
-			fontSize = buttonTextSize,
-			onRelease = loginLogoutListener,
-		}
-
-		-- Checks if the auto login worked and if it did then change the text on the button
-		if gameNetwork.request("isConnected") then
-			loginLogoutButton:setLabel("Logout")
-		end
 
 
 -----------------------------------------------------------
@@ -171,7 +96,7 @@ gameNetwork.request("login",
 menuPos = 1
 
 local function saveGrpPos( event )
-	beginGrpPos = carMakerGroup.x
+	beginGrpPos = carMakeGroup.x
 	--print(beginGrpPos)
 end
 timer.performWithDelay(0, saveGrpPos, 1)
@@ -197,7 +122,7 @@ elseif "moved" == phase then
 movePointX = (event.x - event.xStart)
 --print("X Moved: "..movePointX)
 local dist = eventX-lastPos
-carMakerGroup.x = carMakerGroup.x+(dist)
+carMakeGroup.x = carMakeGroup.x+(dist)
 lastPos = eventX
 
 
@@ -206,26 +131,26 @@ elseif "ended" == phase or "cancelled" == phase then
 --swipeTouchObj.alpha = 0
 
 if movePointX < -xThreshold and menuPos == 1 then
-	movement = transition.to(  carMakerGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  carMakeGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos + 1
 	print("The Main Menu is at Screen " .. menuPos)
 
 
 elseif movePointX < -xThreshold and menuPos == 2 then
-	movement = transition.to(  carMakerGroup, {  time=500, x = -1080*2, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  carMakeGroup, {  time=500, x = -1080*2, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos + 1
 	print("The Main Menu is at Screen " .. menuPos)
 
 
 
 elseif movePointX > xThreshold and menuPos == 2 then
-	movement = transition.to(  carMakerGroup, {  time=500, x = 0, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  carMakeGroup, {  time=500, x = 0, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos - 1
 	print("The Main Menu is at Screen " .. menuPos)
 
 
 elseif movePointX > xThreshold and menuPos == 3 then
-	movement = transition.to(  carMakerGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
+	movement = transition.to(  carMakeGroup, {  time=500, x = -1080, transition = easing.outQuad, onComplete = saveGrpPos } )
 	menuPos = menuPos - 1
 	print("The Main Menu is at Screen " .. menuPos)
 
@@ -237,17 +162,17 @@ else
 	--This is what causes the screen to 'spring' back when you're at the first or lst screen
 	--
 	if menuPos == 1 then
-		transition.to(  carMakerGroup, {  time=500, x = 0, transition = easing.outQuad } )
+		transition.to(  carMakeGroup, {  time=500, x = 0, transition = easing.outQuad } )
 		elseif menuPos == 2 then
-			transition.to(  carMakerGroup, {  time=500, x = -1080, transition = easing.outQuad } )
+			transition.to(  carMakeGroup, {  time=500, x = -1080, transition = easing.outQuad } )
 			elseif menuPos == 3 then
-				transition.to(  carMakerGroup, {  time=500, x = -2160, transition = easing.outQuad } )
+				transition.to(  carMakeGroup, {  time=500, x = -2160, transition = easing.outQuad } )
 			end
 		end
 	end
 end
 
-swipeTouchObj:addEventListener( "touch", screenSwipe )
+--swipeTouchObj:addEventListener( "touch", screenSwipe )
 
 
 end

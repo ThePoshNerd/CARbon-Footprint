@@ -10,6 +10,8 @@ local drive25Achieve = "CgkI-_Shl70OEAIQBQ"
 local drive50Achieve = "CgkI-_Shl70OEAIQBg"
 
 local effUnder50Board = "CgkI-_Shl70OEAIQCQ"
+local effOver50Board = "CgkI-_Shl70OEAIQAQ"
+local moneySavedBoard = "CgkI-_Shl70OEAIQCA"
 
 
 -- "scene:create()"
@@ -25,6 +27,17 @@ function scene:create( event )
   endDriveButton.y = 100
   sceneGroup:insert(endDriveButton)
 
+  local background = display.newRect( 0, 0, 1080, 1920 )
+  background.x = _W*0.5
+  background.y = _H*0.5
+  sceneGroup:insert(background)
+
+  local driveMenu = display.newImage("assets/menus/driveMenu.png", true)
+  driveMenu.anchorY = 0.5
+  driveMenu.anchorX = 0.5
+  driveMenu.y = _H*0.5
+  driveMenu.x = _W*0.5
+  sceneGroup:insert(driveMenu)
 
 
   local moneySavedText = display.newText( "0", 0, 0, native.systemFont, 100 )
@@ -184,10 +197,11 @@ function scene:create( event )
     if event.phase == "began" then
       timer.cancel(calcMpgTimer)
 
+      mpgAverage = math.round(mpgAverageTemp/milesDriven*10)*0.1
+      print(mpgAverage)
+
 
       if milesDriven >= 2 and milesDriven <= 50 then
-        mpgAverage = math.round(mpgAverageTemp/milesDriven*10)*0.1
-        print(mpgAverage)
         gameNetwork.request("setHighScore",
         {
           localPlayerScore =
@@ -196,10 +210,31 @@ function scene:create( event )
             value = mpgAverage -- The score to submit
           }
         })
-        composer.gotoScene( "postDriveScreen", "fade", 400 )
       end
 
+      if milesDriven >= 51 and milesDriven <= 100 then
+          gameNetwork.request("setHighScore",
+          {
+            localPlayerScore =
+            {
+              category = effOver50Board, -- Id of the leaderboard to submit the score into
+              value = mpgAverage -- The score to submit
+            }
+          })
+      end
 
+      --Publish Money Saved
+      gameNetwork.request("setHighScore",
+      {
+        localPlayerScore =
+        {
+          category = moneySavedBoard, -- Id of the leaderboard to submit the score into
+          value = moneyDifferenceTemp -- The score to submit
+        }
+      })
+      print(moneyDifferenceTemp)
+
+      composer.gotoScene( "postDriveScreen", "fade", 400 )
     end
   end
 
@@ -229,9 +264,9 @@ function scene:create( event )
       return dist
     end
 
-    calcDist()
+    --calcDist()
 
---[[
+
 
     local myMap = native.newMapView( 0, 0, 320, 480 )
     myMap.x = display.contentCenterX
@@ -247,7 +282,7 @@ function scene:create( event )
     else
       locationtxt.text = locationtxt.text .. locationTable.latitude .. ", " ..locationTable.longitude
     end
---]]
+
 
   end
 
