@@ -29,12 +29,6 @@ carMakerGroup = display.newGroup()
 sceneGroup:insert( carMakerGroup )
 
 
-local myVehicle = display.newImage(myVehiclePath or "assets/cars/toyota-prius.png", true)
-myVehicle.anchorY = 0
-myVehicle.anchorX = 0.5
-myVehicle.y = _H*0.5 + 500
-myVehicle.x = _W*0.5
-sceneGroup:insert(myVehicle)
 
 
 local leaderboardButton = display.newCircle( 100, 100, 256 )

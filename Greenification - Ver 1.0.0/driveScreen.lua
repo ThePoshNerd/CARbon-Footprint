@@ -9,6 +9,8 @@ local save20Achieve = "CgkI-_Shl70OEAIQBA"
 local drive25Achieve = "CgkI-_Shl70OEAIQBQ"
 local drive50Achieve = "CgkI-_Shl70OEAIQBg"
 
+local effUnder50Board = "CgkI-_Shl70OEAIQCQ"
+
 
 -- "scene:create()"
 function scene:create( event )
@@ -18,7 +20,10 @@ function scene:create( event )
 
 
 
-
+  local endDriveButton = display.newCircle( 100, 100, 50 )
+  endDriveButton.x = _W - 100
+  endDriveButton.y = 100
+  sceneGroup:insert(endDriveButton)
 
 
 
@@ -52,6 +57,8 @@ function scene:create( event )
 
   local fuelPrice = 2.75
   local milesDriven = 0
+  local mpgAverage = 0
+  local mpgAverageTemp = 0
 
   local estimatedMPG = vehicleMPG or 0
   local estimatedFuelUsed
@@ -84,7 +91,7 @@ function scene:create( event )
         {
           achievement =
           {
-            identifier = drive55Achieve
+            identifier = drive50Achieve
           }
         })
       end
@@ -122,29 +129,31 @@ function scene:create( event )
 
       --Actual Fuel Math Functions
 
-      print("Estimated MPG: " .. estimatedMPG )
+      --print("Estimated MPG: " .. estimatedMPG )
 
       estimatedFuelUsed = milesDriven/estimatedMPG
-      print("Estimated Fuel Used: " .. estimatedFuelUsed .. " Gallons")
+      --print("Estimated Fuel Used: " .. estimatedFuelUsed .. " Gallons")
       --Exact number from the car's data
 
       estimatedSpentOnFuel = fuelPrice*estimatedFuelUsed --Exact Amount Spent of Fuel
-      print("Estimated Amount Spent on Fuel: " .. "$" .. estimatedSpentOnFuel )
+      --print("Estimated Amount Spent on Fuel: " .. "$" .. estimatedSpentOnFuel )
 
 
       --Random Fuel Math Functions
 
       simulatedFuelUsed = math.random(100*estimatedFuelUsed*0.95, 100*estimatedFuelUsed*1.02) / 100
-      print("Simulated Fuel Used: " .. simulatedFuelUsed .. " Gallons")
+      --print("Simulated Fuel Used: " .. simulatedFuelUsed .. " Gallons")
       --Fudged number to show variation
 
       simulatedSpentOnFuel = fuelPrice*simulatedFuelUsed --Fudged Amount Spent of Fuel
-      print("Simulated Amount Spent on Fuel: " .. "$" .. simulatedSpentOnFuel )
+      --print("Simulated Amount Spent on Fuel: " .. "$" .. simulatedSpentOnFuel )
 
       simulatedMPG = milesDriven/simulatedFuelUsed
-      print("Simulated MPG: " .. simulatedMPG )
+      --print("Simulated MPG: " .. simulatedMPG )
 
       mpgText.text = math.round(simulatedMPG*10)*0.1
+
+      mpgAverageTemp = mpgAverageTemp + simulatedMPG
 
       moneyDifference = (estimatedSpentOnFuel - simulatedSpentOnFuel)
       addSavings()
@@ -154,7 +163,7 @@ function scene:create( event )
   end
 
   calcMPG()
-  timer.performWithDelay(1000, calcMPG, 0) --After every mile
+  local calcMpgTimer = timer.performWithDelay(1000, calcMPG, 0) --After every mile
 
 
 
@@ -171,9 +180,31 @@ function scene:create( event )
     ---coupons also pop up when you get Achievements
 
 
+  local function postToLeaderboard(event)
+    if event.phase == "began" then
+      timer.cancel(calcMpgTimer)
 
 
+      if milesDriven >= 2 and milesDriven <= 50 then
+        mpgAverage = math.round(mpgAverageTemp/milesDriven*10)*0.1
+        print(mpgAverage)
+        gameNetwork.request("setHighScore",
+        {
+          localPlayerScore =
+          {
+            category = effUnder50Board, -- Id of the leaderboard to submit the score into
+            value = mpgAverage -- The score to submit
+          }
+        })
+        composer.gotoScene( "postDriveScreen", "fade", 400 )
+      end
 
+
+    end
+  end
+
+
+  endDriveButton:addEventListener( "touch", postToLeaderboard )
 
 
 

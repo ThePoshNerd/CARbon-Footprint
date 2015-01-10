@@ -39,7 +39,7 @@ nissanLogo.anchorY = 0.5
 nissanLogo.anchorX = 0.5
 nissanLogo.yScale = 0.9
 nissanLogo.xScale = 0.9
-nissanLogo.y = _H*0.5
+nissanLogo.y = _H*0.5 - 512
 nissanLogo.x = _W*0.5 - 256
 carMakerGroup:insert(nissanLogo)
 
@@ -48,9 +48,30 @@ toyotaLogo.anchorY = 0.5
 toyotaLogo.anchorX = 0.5
 toyotaLogo.yScale = 0.9
 toyotaLogo.xScale = 0.9
-toyotaLogo.y = _H*0.5
+toyotaLogo.y = _H*0.5 - 512
 toyotaLogo.x = _W*0.5 + 256
 carMakerGroup:insert(toyotaLogo)
+
+local fordLogo = display.newImage("assets/carLogos/ford.png", true)
+fordLogo.anchorY = 0.5
+fordLogo.anchorX = 0.5
+fordLogo.yScale = 0.9
+fordLogo.xScale = 0.9
+fordLogo.y = _H*0.5
+fordLogo.x = _W*0.5 + 256
+carMakerGroup:insert(fordLogo)
+
+local hondaLogo = display.newImage("assets/carLogos/honda.png", true)
+hondaLogo.anchorY = 0.5
+hondaLogo.anchorX = 0.5
+hondaLogo.yScale = 0.9
+hondaLogo.xScale = 0.9
+hondaLogo.y = _H*0.5
+hondaLogo.x = _W*0.5 - 256
+carMakerGroup:insert(hondaLogo)
+
+
+
 
 
 local function goToNissanSelect (event)
