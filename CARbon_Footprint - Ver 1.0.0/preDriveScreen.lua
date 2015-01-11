@@ -3,6 +3,7 @@ local composer = require( "composer" )
 local widget = require "widget"
 composer.removeScene( "driveScreen", false )
 composer.removeScene( "postDriveScreen", false )
+composer.removeScene( "redeemScreen", false )
 
 local scene = composer.newScene()
 

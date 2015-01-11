@@ -12,6 +12,8 @@ local drive50Achieve = "CgkI-_Shl70OEAIQBg"
 composer.removeScene( "driveScreen", false )
 composer.removeScene( "preDriveScreen", false )
 composer.removeScene( "postDriveScreen", false )
+composer.removeScene( "redeemScreen2", false )
+
 
 
 local scene = composer.newScene()
@@ -69,7 +71,7 @@ end
 
 local function goToRedeemScreen (event)
 	if event.phase == "ended" then
-		composer.gotoScene( "redeemScreen", "fade", 400 )
+		composer.gotoScene( "redeemScreen2", "fade", 400 )
 	end
 end
 
