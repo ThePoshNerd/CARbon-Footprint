@@ -253,7 +253,7 @@ print(simulatedFootprintRounded)
     chooseSpeedNotif = math.random(10)
 
     if simulatedMPG < estimatedMPG then
-      myMap.y = 2048
+      myMap.y = 3048
       if chooseSpeedNotif > 5 then
         transition.to( speedNotif1, { time=500, alpha=1} )
       else
@@ -261,7 +261,7 @@ print(simulatedFootprintRounded)
     end
 
     else
-      myMap.x = 540
+      myMap.y = 1600
       transition.to( speedNotif1, { time=500, alpha=0} )
       transition.to( speedNotif2, { time=500, alpha=0} )
 
