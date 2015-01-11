@@ -41,13 +41,6 @@ function scene:create( event )
   speedNotif.alpha = 0
   sceneGroup:insert(speedNotif)
 
-  local speedNotif = display.newImage("assets/menus/driveMenu.png", true)
-  speedNotif.anchorY = 0.5
-  speedNotif.anchorX = 0.5
-  speedNotif.y = _H*0.5
-  speedNotif.x = _W*0.5
-  sceneGroup:insert(speedNotif)
-
   local driveMenu = display.newImage("assets/menus/driveMenu.png", true)
   driveMenu.anchorY = 0.5
   driveMenu.anchorX = 0.5
@@ -106,7 +99,7 @@ function scene:create( event )
   local mpgAverage = 0
   local mpgAverageTemp = 0
 
-  local estimatedMPG =  50
+  local estimatedMPG =  7
   local estimatedFuelUsed
   local estimatedSpentOnFuel
 
@@ -240,15 +233,20 @@ print(simulatedFootprintRounded)
 
 
 
+
+
+
   local function slowDownNotif()
     if simulatedMPG > estimatedMPG then
       transition.to( speedNotif, { time=500, alpha=0} )
 
-    else
-      transition.to( speedNotif, { time=500, alpha=1} )
+  else
+    transition.to( speedNotif, { time=500, alpha=1} )
 
     end
   end
+
+
 
 
 
@@ -348,8 +346,6 @@ local function endDrive (event)
   end
 
   endDriveButton:addEventListener( "touch", endDrive )
-
-
 
 
 
