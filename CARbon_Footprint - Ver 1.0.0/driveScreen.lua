@@ -312,7 +312,7 @@ local function endDrive (event)
     if event.phase == "began" then
       timer.cancel(calcMpgTimer)
       myMap:removeSelf()
-      myGreenCoinEarned = 50
+      myGreenCoinEarned = 100
       myGreenCoin = myGreenCoin + myGreenCoinEarned
       composer.gotoScene( "postDriveScreen", "fade", 400 )
     end
