@@ -46,9 +46,9 @@ function scene:create( event )
   sceneGroup:insert(endDriveButton)
 
 
-  local footprintText = display.newText( "0", 0, 0, native.systemFont, 170 )
+  local footprintText = display.newText( "0", 0, 0, native.systemFont, 140 )
   footprintText.x = _W*0.5
-  footprintText.y = _H*0.5 - 570
+  footprintText.y = _H*0.5 - 510
   footprintText:setFillColor( 1, 1, 1 )
   footprintText.anchorX = 0.5
   sceneGroup:insert(footprintText)
@@ -87,7 +87,7 @@ function scene:create( event )
 
 
   local fuelPrice = 2.75
-  local milesDriven = 200
+  local milesDriven = 0
   local mpgAverage = 0
   local mpgAverageTemp = 0
 
@@ -254,7 +254,7 @@ print(simulatedFootprintRounded)
 
       --Random Fuel Math Functions
 
-      simulatedMPG = math.random(100*milesDriven/estimatedFuelUsed*1, 100*milesDriven/estimatedFuelUsed*1.05) / 100
+      simulatedMPG = math.random(100*milesDriven/estimatedFuelUsed*0.99, 100*milesDriven/estimatedFuelUsed*1.05) / 100
 
       print("Simulated MPG: " .. simulatedMPG )
 
@@ -282,7 +282,7 @@ print(simulatedFootprintRounded)
 
       simulatedFootprintRounded = ((math.floor( simulatedFootprint*shift + 0.5 )/shift)*milesDriven)
 
-      footprintText.text = ((math.floor( (simulatedFootprintRounded*19.64) *shift + 0.5 )/shift).. " lbs." )
+      footprintText.text = ((math.floor( (simulatedFootprintRounded*19.64) *shift + 0.5 )/shift) )
 
 
 

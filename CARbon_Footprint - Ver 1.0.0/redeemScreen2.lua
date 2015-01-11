@@ -40,12 +40,6 @@ function scene:create( event )
 	sceneGroup:insert(redeemMenu)
 
 
-	local redeemHeader = display.newImage("assets/menus/preDriveHeader.png", true)
-	redeemHeader.anchorY = 0
-	redeemHeader.anchorX = 0.5
-	redeemHeader.x = _W*0.5
-	sceneGroup:insert(redeemHeader)
-
 	local gcAmountText = display.newText( "0", 0, 0, native.systemFont, 80 )
 	gcAmountText.x = _W*0.5 - 100
 	gcAmountText.y =  380
@@ -102,7 +96,7 @@ function scene:create( event )
 		onEvent = openPopup
 	}
 
-	openPopButton.x = _W*0.5 - 90
+	openPopButton.x = _W*0.5 +5
 	openPopButton.y = _H*0.5 - 185
 	sceneGroup:insert(openPopButton)
 
