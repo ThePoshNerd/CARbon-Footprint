@@ -87,7 +87,7 @@ function scene:create( event )
 
 
   local fuelPrice = 2.75
-  local milesDriven = 0
+  local milesDriven = 200
   local mpgAverage = 0
   local mpgAverageTemp = 0
 
@@ -228,6 +228,11 @@ print(simulatedFootprintRounded)
 
 
 
+
+
+
+
+
   local function calcMPG()
 
     milesDriven = milesDriven + 1
@@ -249,37 +254,36 @@ print(simulatedFootprintRounded)
 
       --Random Fuel Math Functions
 
-      simulatedFuelUsed = math.random(100*estimatedFuelUsed*0.95, 100*estimatedFuelUsed*1.02) / 100
-      --print("Simulated Fuel Used: " .. simulatedFuelUsed .. " Gallons")
+      simulatedMPG = math.random(100*milesDriven/estimatedFuelUsed*1, 100*milesDriven/estimatedFuelUsed*1.05) / 100
+
+      print("Simulated MPG: " .. simulatedMPG )
+
+
+      simulatedFuelUsed = milesDriven/simulatedMPG
+      print("Simulated Fuel Used: " .. simulatedFuelUsed .. " Gallons")
       --Fudged number to show variation
 
       simulatedSpentOnFuel = fuelPrice*simulatedFuelUsed --Fudged Amount Spent of Fuel
       --print("Simulated Amount Spent on Fuel: " .. "$" .. simulatedSpentOnFuel )
 
-      simulatedMPG = milesDriven/simulatedFuelUsed
-      --print("Simulated MPG: " .. simulatedMPG )
 
       mpgText.text = math.round(simulatedMPG*10)*0.1
 
-        if simulatedFuelUsed < estimatedFuelUsed then
 
-          simulatedFootprint = simulatedFuelUsed*19.64--*0.000453592 --http://www.eia.gov/tools/faqs/faq.cfm?id=307&t=11
 
-          print(simulatedFootprint)
+      simulatedFootprint = (simulatedFuelUsed/milesDriven  )         --*0.000453592 --http://www.eia.gov/tools/faqs/faq.cfm?id=307&t=11
 
-        else
-          print"pk"
+      print(simulatedFootprint .. "ttest")
 
-          simulatedFootprint = simulatedFootprint + 0.13
 
-        end
 
       local digits = 2
       local shift = 10 ^ digits
 
-      simulatedFootprintRounded = (math.floor( simulatedFootprint*shift + 0.5 )/shift)
+      simulatedFootprintRounded = ((math.floor( simulatedFootprint*shift + 0.5 )/shift)*milesDriven)
 
-      footprintText.text = (simulatedFootprintRounded .. " lbs." )
+      footprintText.text = ((math.floor( (simulatedFootprintRounded*19.64) *shift + 0.5 )/shift).. " lbs." )
+
 
 
       mpgAverageTemp = mpgAverageTemp + simulatedMPG
@@ -293,7 +297,7 @@ print(simulatedFootprintRounded)
   end
 
   calcMPG()
-  local calcMpgTimer = timer.performWithDelay(1000, calcMPG, 0) --After every mile
+  local calcMpgTimer = timer.performWithDelay(2000, calcMPG, 0) --After every mile
 
 
 
