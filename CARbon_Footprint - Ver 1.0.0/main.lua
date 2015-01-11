@@ -20,7 +20,7 @@ myGreenCoin = 0
 
 local function carMakerScreen (event)
   splash:removeSelf()
-  composer.gotoScene( "preDriveScreen", "fade", 400 )
+  composer.gotoScene( "postDriveScreen", "fade", 400 )
 end
 transition.to( splash, { time=50, delay = 0, alpha=0, onComplete = carMakerScreen } )
 

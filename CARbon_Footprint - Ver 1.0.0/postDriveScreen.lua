@@ -1,5 +1,5 @@
 local composer = require( "composer" )
-
+local widget = require "widget"
 
 local save5Achieve = "CgkI-_Shl70OEAIQAg"
 local save10Achieve = "CgkI-_Shl70OEAIQAw"
@@ -33,13 +33,11 @@ function scene:create( event )
 carMakerGroup = display.newGroup()
 sceneGroup:insert( carMakerGroup )
 
+local background = display.newRect( 0, 0, 1080, 1920 )
+background.x = _W*0.5
+background.y = _H*0.5
+sceneGroup:insert(background)
 
-local postDriveMenu = display.newImage("assets/menus/postDriveScreen.png", true)
-postDriveMenu.anchorY = 0.5
-postDriveMenu.anchorX = 0.5
-postDriveMenu.y = _H*0.5
-postDriveMenu.x = _W*0.5
-sceneGroup:insert(postDriveMenu)
 
 local postDriveHeader = display.newImage("assets/menus/postDriveHeader.png", true)
 postDriveHeader.anchorY = 0
@@ -60,51 +58,72 @@ sceneGroup:insert(gcAmountText)
 
 
 
-local leaderboardButton = display.newRect( 0, 0, 860, 250 )
-leaderboardButton.x = _W*0.5
-leaderboardButton.y = _H*0.5 - 75
-leaderboardButton.alpha = 0.1
-sceneGroup:insert(leaderboardButton)
-
-local redeemButton = display.newRect( 0, 0, 860, 250 )
-redeemButton.x = _W*0.5
-redeemButton.y = _H*0.5 + 275
-redeemButton.alpha = 0.1
-sceneGroup:insert(redeemButton)
-
-
-local newDriveButton = display.newRect( 0, 0, 860, 250 )
-newDriveButton.x = _W*0.5
-newDriveButton.y = _H*0.5 + 615
-newDriveButton.alpha = 0.1
-sceneGroup:insert(newDriveButton)
 
 
 local function showLeaderboard (event)
-	if event.phase == "began" then
+	if event.phase == "ended" then
 		gameNetwork.show("leaderboards")
 	end
 end
 
-leaderboardButton:addEventListener( "touch", showLeaderboard )
 
 local function goToRedeemScreen (event)
-	if event.phase == "began" then
+	if event.phase == "ended" then
 		composer.gotoScene( "redeemScreen", "fade", 400 )
 	end
 end
 
-redeemButton:addEventListener( "touch", goToRedeemScreen )
-
 
 local function newDrive (event)
-	if event.phase == "began" then
+	if event.phase == "ended" then
 		composer.gotoScene( "preDriveScreen", "fade", 400 )
 	end
 end
 
-newDriveButton:addEventListener( "touch", newDrive )
 
+
+
+local leaderboardButton = widget.newButton
+{
+	width = 830,
+	height = 238,
+	defaultFile = "assets/buttons/leaderboard.png",
+	overFile = "assets/buttons/leaderboardPress.png",
+	onEvent = showLeaderboard
+}
+
+leaderboardButton.x = _W*0.5
+leaderboardButton.y = _H*0.5 - 90
+sceneGroup:insert(leaderboardButton)
+
+
+
+local redeemButton = widget.newButton
+{
+	width = 830,
+	height = 238,
+	defaultFile = "assets/buttons/redeem.png",
+	overFile = "assets/buttons/redeemPress.png",
+	onEvent = goToRedeemScreen
+}
+
+redeemButton.x = _W*0.5
+redeemButton.y = _H*0.5 + 275
+sceneGroup:insert(redeemButton)
+
+
+local newDriveButton = widget.newButton
+{
+	width = 830,
+	height = 238,
+	defaultFile = "assets/buttons/newDrive.png",
+	overFile = "assets/buttons/newDrivePress.png",
+	onEvent = newDrive
+}
+
+newDriveButton.x = _W*0.5
+newDriveButton.y = _H*0.5 + 615
+sceneGroup:insert(newDriveButton)
 
 ---------------------------------------
 ---------------------------------------------------------------------------------

@@ -36,6 +36,23 @@ redeemMenu.y = _H*0.5
 redeemMenu.x = _W*0.5
 sceneGroup:insert(redeemMenu)
 
+
+local redeemHeader = display.newImage("assets/menus/preDriveHeader.png", true)
+redeemHeader.anchorY = 0
+redeemHeader.anchorX = 0.5
+redeemHeader.x = _W*0.5
+sceneGroup:insert(redeemHeader)
+
+local gcAmountText = display.newText( "0", 0, 0, native.systemFont, 80 )
+gcAmountText.x = _W*0.5 - 100
+gcAmountText.y =  380
+gcAmountText:setFillColor( 0/255, 102/255, 0/255 )
+gcAmountText.anchorX = 0.5
+gcAmountText.text = myGreenCoin
+sceneGroup:insert(gcAmountText)
+
+
+
 local backButton = display.newImage("assets/backArrow.png", true)
 backButton.x = 90
 backButton.y = 80
@@ -43,7 +60,7 @@ sceneGroup:insert(backButton)
 
 local function goBack (event)
 	if event.phase == "began" then
-		composer.gotoScene( "postDriveScreen", "fade", 400 )
+		composer.gotoScene( "preDriveScreen", "fade", 400 )
 	end
 end
 
