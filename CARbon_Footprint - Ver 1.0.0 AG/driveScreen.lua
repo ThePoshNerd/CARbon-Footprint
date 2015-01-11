@@ -33,13 +33,7 @@ function scene:create( event )
   background.y = _H*0.5
   sceneGroup:insert(background)
 
-  local speedNotif = display.newImage("assets/slowDown.png", true)
-  speedNotif.anchorY = 0.5
-  speedNotif.anchorX = 0.5
-  speedNotif.y = _H*0.5
-  speedNotif.x = _W*0.5
-  speedNotif.alpha = 0
-  sceneGroup:insert(speedNotif)
+
 
   local driveMenu = display.newImage("assets/menus/driveMenu.png", true)
   driveMenu.anchorY = 0.5
@@ -47,6 +41,8 @@ function scene:create( event )
   driveMenu.y = _H*0.5
   driveMenu.x = _W*0.5
   sceneGroup:insert(driveMenu)
+
+
 
   local endDriveButton = display.newImage("assets/checkmark.png", true)
   endDriveButton.x = 990
@@ -94,7 +90,10 @@ function scene:create( event )
 
 
 
-  local fuelPrice = 2.75
+
+
+
+  local fuelPrice = 3.89
   local milesDriven = 0
   local mpgAverage = 0
   local mpgAverageTemp = 0
@@ -232,16 +231,39 @@ print(simulatedFootprintRounded)
   end
 
 
+  local speedNotif1 = display.newImage("assets/slowDown1.png", true)
+  speedNotif1.anchorY = 0.5
+  speedNotif1.anchorX = 0.5
+  speedNotif1.y = _H*0.5
+  speedNotif1.x = _W*0.5
+  speedNotif1.alpha = 0
+  sceneGroup:insert(speedNotif1)
 
+  local speedNotif2 = display.newImage("assets/slowDown2.png", true)
+  speedNotif2.anchorY = 0.5
+  speedNotif2.anchorX = 0.5
+  speedNotif2.y = _H*0.5
+  speedNotif2.x = _W*0.5
+  speedNotif2.alpha = 0
+  sceneGroup:insert(speedNotif2)
 
 
 
   local function slowDownNotif()
-    if simulatedMPG > estimatedMPG then
-      transition.to( speedNotif, { time=500, alpha=0} )
+    chooseSpeedNotif = math.random(10)
 
-  else
-    transition.to( speedNotif, { time=500, alpha=1} )
+    if simulatedMPG < estimatedMPG then
+      myMap.y = 2048
+      if chooseSpeedNotif > 5 then
+        transition.to( speedNotif1, { time=500, alpha=1} )
+      else
+        transition.to( speedNotif2, { time=500, alpha=1} )
+    end
+
+    else
+      myMap.x = 540
+      transition.to( speedNotif1, { time=500, alpha=0} )
+      transition.to( speedNotif2, { time=500, alpha=0} )
 
     end
   end
@@ -303,7 +325,7 @@ print(simulatedFootprintRounded)
 
       simulatedFootprintRounded = ((math.floor( simulatedFootprint*shift + 0.5 )/shift)*milesDriven)
 
-      footprintText.text = ((math.floor( (simulatedFootprintRounded*19.64) *shift + 0.5 )/shift) )
+      footprintText.text = ((math.floor( (simulatedFootprintRounded*22.38) *shift + 0.5 )/shift) )
 
 
 
