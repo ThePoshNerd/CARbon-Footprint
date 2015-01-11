@@ -248,7 +248,7 @@ print(simulatedFootprintRounded)
   sceneGroup:insert(speedNotif2)
 
 
-
+--[[
   local function slowDownNotif()
     chooseSpeedNotif = math.random(10)
 
@@ -269,10 +269,40 @@ print(simulatedFootprintRounded)
   end
 
 
+--]]
 
 
+local function slowDownNotifOff(event)
+  myMap.y = 1600
+  transition.to( speedNotif1, { time=500, alpha=0} )
+  transition.to( speedNotif2, { time=500, alpha=0} )
+  end
+
+local function slowDownNotifOn(event)
+  if event.phase=="began" then
+  chooseSpeedNotif = math.random(10)
+    myMap.y = 3048
+    if chooseSpeedNotif > 5 then
+      transition.to( speedNotif1, { time=500, alpha=1} )
+    else
+      transition.to( speedNotif2, { time=500, alpha=1} )
+  end
+  timer.performWithDelay(2000, slowDownNotifOff, 1)
+end
+end
+
+myMap.y = 1600
+transition.to( speedNotif1, { time=500, alpha=0} )
+transition.to( speedNotif2, { time=500, alpha=0} )
 
 
+  local notifButton = display.newRect( 0, 0, 200, 200 )
+  notifButton.x = 100
+  notifButton.y = 100
+  notifButton.alpha = 0.1
+  sceneGroup:insert(notifButton)
+
+  notifButton:addEventListener( "touch", slowDownNotifOn )
 
 
 
@@ -333,7 +363,7 @@ print(simulatedFootprintRounded)
 
       moneyDifference = (estimatedSpentOnFuel - simulatedSpentOnFuel)
 
-      slowDownNotif()
+      --slowDownNotif()
       addSavings()
       achievementListener()
       postToLeaderboard()
