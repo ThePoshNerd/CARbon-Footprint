@@ -1,5 +1,6 @@
 local composer = require( "composer" )
 
+local widget = require "widget"
 composer.removeScene( "driveScreen", false )
 composer.removeScene( "postDriveScreen", false )
 
@@ -28,15 +29,46 @@ background.y = _H*0.5
 sceneGroup:insert(background)
 
 
-local header = display.newImage("assets/menus/driveHeader.png", true)
-header.anchorY = 0
-header.anchorX = 0
-header.x = 0
-header.y = 0
-sceneGroup:insert(header)
+local preDriveHeader = display.newImage("assets/menus/preDriveHeader.png", true)
+preDriveHeader.anchorY = 0
+preDriveHeader.anchorX = 0.5
+preDriveHeader.x = _W*0.5
+sceneGroup:insert(preDriveHeader)
+
+
+local gcAmountText = display.newText( "0", 0, 0, native.systemFont, 80 )
+gcAmountText.x = _W*0.5 - 100
+gcAmountText.y =  380
+gcAmountText:setFillColor( 0/255, 102/255, 0/255 )
+gcAmountText.anchorX = 0.5
+gcAmountText.text = myGreenCoin
+sceneGroup:insert(gcAmountText)
 
 
 
+
+
+
+local function goToRedeemScreen (event)
+	if event.phase == "ended" then
+		composer.gotoScene( "redeemScreen", "fade", 400 )
+	end
+end
+
+local redeemButton = widget.newButton
+{
+	width = 830,
+	height = 238,
+	defaultFile = "assets/buttons/redeem.png",
+	overFile = "assets/buttons/redeemPress.png",
+	onEvent = goToRedeemScreen
+}
+
+redeemButton.x = _W*0.5
+redeemButton.y = _H*0.5+ 600
+sceneGroup:insert(redeemButton)
+
+--[[
 local backButton = display.newImage("assets/backArrow.png", true)
 backButton.x = 90
 backButton.y = 80
@@ -49,21 +81,29 @@ local function goBack (event)
 end
 
 backButton:addEventListener( "touch", goBack )
+--]]
 
-
-local startDriveButton = display.newImage("assets/driveButton.png", true)
-startDriveButton.x = _W*0.5
-startDriveButton.y = _H*0.5
-sceneGroup:insert(startDriveButton)
 
 
 local function goToDriveScreen (event)
-	if event.phase == "began" then
+	if event.phase == "ended" then
 		composer.gotoScene( "driveScreen", "fade", 400 )
 	end
 end
 
-startDriveButton:addEventListener( "touch", goToDriveScreen )
+
+local startDriveButton = widget.newButton
+{
+	width = 642,
+	height = 642,
+	defaultFile = "assets/buttons/driveButton.png",
+	overFile = "assets/buttons/driveButtonPress.png",
+	onEvent = goToDriveScreen
+}
+
+startDriveButton.x = _W*0.5
+startDriveButton.y = _H*0.5
+sceneGroup:insert(startDriveButton)
 
 ---------------------------------------
 ---------------------------------------------------------------------------------
@@ -74,7 +114,6 @@ startDriveButton:addEventListener( "touch", goToDriveScreen )
 ---------------------------------------
 
 
-local widget = require "widget"
 
 
 
@@ -117,7 +156,7 @@ gameNetwork.request("login",
 
 
 		--login button
-		loginLogoutButton = widget.newButton
+		local loginLogoutButton = widget.newButton
 		{
 			top = display.screenOriginY + display.viewableContentHeight - size,
 			left = left,
@@ -127,6 +166,7 @@ gameNetwork.request("login",
 			fontSize = buttonTextSize,
 			onRelease = loginLogoutListener,
 		}
+		sceneGroup:insert(loginLogoutButton)
 		--sceneGroup:insert(loginLogoutButton)
 
 		-- Checks if the auto login worked and if it did then change the text on the button

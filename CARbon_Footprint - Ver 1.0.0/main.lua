@@ -16,12 +16,13 @@ splash.y = _H*0.5
 splash.x = _W*0.5
 --carMakeGroup:insert(splash)
 
+myGreenCoin = 0
 
 local function carMakerScreen (event)
   splash:removeSelf()
-  composer.gotoScene( "manufacturerSelectScreen", "fade", 400 )
+  composer.gotoScene( "preDriveScreen", "fade", 400 )
 end
-transition.to( splash, { time=500, delay = 1500, alpha=0, onComplete = carMakerScreen } )
+transition.to( splash, { time=50, delay = 0, alpha=0, onComplete = carMakerScreen } )
 
 
 

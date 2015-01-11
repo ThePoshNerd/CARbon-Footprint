@@ -41,6 +41,25 @@ postDriveMenu.y = _H*0.5
 postDriveMenu.x = _W*0.5
 sceneGroup:insert(postDriveMenu)
 
+local postDriveHeader = display.newImage("assets/menus/postDriveHeader.png", true)
+postDriveHeader.anchorY = 0
+postDriveHeader.anchorX = 0.5
+postDriveHeader.x = _W*0.5
+sceneGroup:insert(postDriveHeader)
+
+
+local gcAmountText = display.newText( "0", 0, 0, native.systemFont, 80 )
+gcAmountText.x = _W*0.5 - 400
+gcAmountText.y =  400
+gcAmountText:setFillColor( 0/255, 102/255, 0/255 )
+gcAmountText.anchorX = 0.5
+gcAmountText.text = myGreenCoinEarned
+sceneGroup:insert(gcAmountText)
+
+
+
+
+
 local leaderboardButton = display.newRect( 0, 0, 860, 250 )
 leaderboardButton.x = _W*0.5
 leaderboardButton.y = _H*0.5 - 75

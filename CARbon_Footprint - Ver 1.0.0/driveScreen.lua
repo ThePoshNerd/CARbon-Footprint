@@ -9,7 +9,9 @@ local save20Achieve = "CgkI-_Shl70OEAIQBA"
 local drive25Achieve = "CgkI-_Shl70OEAIQBQ"
 local drive50Achieve = "CgkI-_Shl70OEAIQBg"
 
-local economyVeh = "CgkI-_Shl70OEAIQCQ"
+local economyVeh2 = "CgkI-_Shl70OEAIQCw"
+local economyVeh25 = "CgkI-_Shl70OEAIQCg"
+local economyVeh50 = "CgkI-_Shl70OEAIQCQ"
 local electricVeh = "CgkI-_Shl70OEAIQAQ"
 local moneySavedBoard = "CgkI-_Shl70OEAIQCA"
 
@@ -44,7 +46,7 @@ function scene:create( event )
   sceneGroup:insert(endDriveButton)
 
 
-  local footprintText = display.newText( "0", 0, 0, native.systemFont, 200 )
+  local footprintText = display.newText( "0", 0, 0, native.systemFont, 170 )
   footprintText.x = _W*0.5
   footprintText.y = _H*0.5 - 570
   footprintText:setFillColor( 1, 1, 1 )
@@ -89,7 +91,7 @@ function scene:create( event )
   local mpgAverage = 0
   local mpgAverageTemp = 0
 
-  local estimatedMPG = vehicleMPG or 55
+  local estimatedMPG =  50
   local estimatedFuelUsed
   local estimatedSpentOnFuel
 
@@ -129,6 +131,79 @@ function scene:create( event )
 
 
 
+  local function postToLeaderboard(event)
+
+print(simulatedFootprintRounded)
+    footprintAverage = simulatedFootprintRounded/milesDriven
+    print(footprintAverage)
+
+    if milesDriven == 5 then
+      gameNetwork.request("setHighScore",
+      {
+        localPlayerScore =
+        {
+          category = economyVeh5, -- Id of the leaderboard to submit the score into
+          value = simulatedFootprintRounded -- The score to submit
+        }
+        })
+      end
+
+      if milesDriven == 25 then
+        gameNetwork.request("setHighScore",
+        {
+          localPlayerScore =
+          {
+            category = economyVeh25, -- Id of the leaderboard to submit the score into
+            value = simulatedFootprintRounded -- The score to submit
+          }
+          })
+        end
+
+    if milesDriven == 50 then
+      gameNetwork.request("setHighScore",
+      {
+        localPlayerScore =
+        {
+          category = economyVeh50, -- Id of the leaderboard to submit the score into
+          value = simulatedFootprintRounded -- The score to submit
+        }
+        })
+    end
+
+      if milesDriven >= 51 and milesDriven <= 100 then
+        gameNetwork.request("setHighScore",
+        {
+          localPlayerScore =
+          {
+            category = effOver50Board, -- Id of the leaderboard to submit the score into
+            value = mpgAverage -- The score to submit
+          }
+          })
+        end
+        --]]
+        --Publish Money Saved
+
+        moneySavedToSubmit = moneyDifferenceTemp*1000000
+        gameNetwork.request("setHighScore",
+        {
+          localPlayerScore =
+          {
+            category = moneySavedBoard, -- Id of the leaderboard to submit the score into
+            value = moneySavedToSubmit -- The score to submit
+          }
+          })
+          print(moneySavedToSubmit)
+
+        end
+
+
+
+
+
+
+
+
+
   local function addSavings()
 
     local digits = 2
@@ -147,6 +222,9 @@ function scene:create( event )
       print("Total Lost: " .. "$" .. math.abs(moneyDifferenceRounded))
     end
   end
+
+
+
 
 
 
@@ -183,12 +261,25 @@ function scene:create( event )
 
       mpgText.text = math.round(simulatedMPG*10)*0.1
 
+        if simulatedFuelUsed > estimatedFuelUsed then
 
+          simulatedFootprint = simulatedFuelUsed*19.64--*0.000453592 --http://www.eia.gov/tools/faqs/faq.cfm?id=307&t=11
 
-      simulatedFootprint = simulatedFootprint + math.random(1, 3)/1000
+          print(simulatedFootprint)
 
-      footprintText.text = (simulatedFootprint .. " Tons" )
+        else
+          print"pk"
 
+          simulatedFootprint = simulatedFootprint + 0.13
+
+        end
+
+      local digits = 2
+      local shift = 10 ^ digits
+
+      simulatedFootprintRounded = (math.floor( simulatedFootprint*shift + 0.5 )/shift)
+
+      footprintText.text = (simulatedFootprintRounded .. " lbs." )
 
 
       mpgAverageTemp = mpgAverageTemp + simulatedMPG
@@ -196,6 +287,7 @@ function scene:create( event )
       moneyDifference = (estimatedSpentOnFuel - simulatedSpentOnFuel)
       addSavings()
       achievementListener()
+      postToLeaderboard()
     end
 
   end
@@ -216,65 +308,21 @@ function scene:create( event )
     -- achievements - Save $5, Save $10, Save $20, Save $50, Drive 50 miles using Greenification
 
     ---coupons also pop up when you get Achievements
-
-
-  local function postToLeaderboard(event)
+local function endDrive (event)
     if event.phase == "began" then
       timer.cancel(calcMpgTimer)
-
-      mpgAverage = math.round(mpgAverageTemp/milesDriven*10)*0.1
-      print(mpgAverage)
-
-      gameNetwork.request("setHighScore",
-      {
-        localPlayerScore =
-        {
-          category = electricVeh, -- Id of the leaderboard to submit the score into
-          value = mpgAverage -- The score to submit
-        }
-        })
---[[
-      if milesDriven >= 2 and milesDriven <= 50 then
-        gameNetwork.request("setHighScore",
-        {
-          localPlayerScore =
-          {
-            category = electricVeh, -- Id of the leaderboard to submit the score into
-            value = mpgAverage -- The score to submit
-          }
-        })
-      end
-
-      if milesDriven >= 51 and milesDriven <= 100 then
-          gameNetwork.request("setHighScore",
-          {
-            localPlayerScore =
-            {
-              category = effOver50Board, -- Id of the leaderboard to submit the score into
-              value = mpgAverage -- The score to submit
-            }
-          })
-      end
---]]
-      --Publish Money Saved
-
-      moneySavedToSubmit = moneyDifferenceTemp*1000000
-      gameNetwork.request("setHighScore",
-      {
-        localPlayerScore =
-        {
-          category = moneySavedBoard, -- Id of the leaderboard to submit the score into
-          value = moneySavedToSubmit -- The score to submit
-        }
-      })
-      print(moneySavedToSubmit)
       myMap:removeSelf()
+      myGreenCoinEarned = 50
+      myGreenCoin = myGreenCoin + myGreenCoinEarned
       composer.gotoScene( "postDriveScreen", "fade", 400 )
     end
   end
 
+  endDriveButton:addEventListener( "touch", endDrive )
 
-  endDriveButton:addEventListener( "touch", postToLeaderboard )
+
+
+
 
 
 
