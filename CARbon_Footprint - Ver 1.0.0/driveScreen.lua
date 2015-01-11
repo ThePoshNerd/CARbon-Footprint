@@ -9,7 +9,7 @@ local save20Achieve = "CgkI-_Shl70OEAIQBA"
 local drive25Achieve = "CgkI-_Shl70OEAIQBQ"
 local drive50Achieve = "CgkI-_Shl70OEAIQBg"
 
-local economyVeh2 = "CgkI-_Shl70OEAIQCw"
+local economyVeh5 = "CgkI-_Shl70OEAIQCw"
 local economyVeh25 = "CgkI-_Shl70OEAIQCg"
 local economyVeh50 = "CgkI-_Shl70OEAIQCQ"
 local electricVeh = "CgkI-_Shl70OEAIQAQ"
@@ -261,7 +261,7 @@ print(simulatedFootprintRounded)
 
       mpgText.text = math.round(simulatedMPG*10)*0.1
 
-        if simulatedFuelUsed > estimatedFuelUsed then
+        if simulatedFuelUsed < estimatedFuelUsed then
 
           simulatedFootprint = simulatedFuelUsed*19.64--*0.000453592 --http://www.eia.gov/tools/faqs/faq.cfm?id=307&t=11
 
@@ -293,7 +293,7 @@ print(simulatedFootprintRounded)
   end
 
   calcMPG()
-  local calcMpgTimer = timer.performWithDelay(2000, calcMPG, 0) --After every mile
+  local calcMpgTimer = timer.performWithDelay(1000, calcMPG, 0) --After every mile
 
 
 
