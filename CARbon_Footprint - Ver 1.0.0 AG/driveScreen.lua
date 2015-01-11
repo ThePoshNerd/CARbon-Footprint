@@ -98,7 +98,7 @@ function scene:create( event )
   local mpgAverage = 0
   local mpgAverageTemp = 0
 
-  local estimatedMPG =  7
+  local estimatedMPG =  5
   local estimatedFuelUsed
   local estimatedSpentOnFuel
 
@@ -344,7 +344,7 @@ transition.to( speedNotif2, { time=500, alpha=0} )
 
 
 
-      simulatedFootprint = (simulatedFuelUsed/milesDriven  )         --*0.000453592 --http://www.eia.gov/tools/faqs/faq.cfm?id=307&t=11
+      simulatedFootprint = (simulatedFuelUsed/milesDriven)         --*0.000453592 --http://www.eia.gov/tools/faqs/faq.cfm?id=307&t=11
 
       print(simulatedFootprint .. "ttest")
 
